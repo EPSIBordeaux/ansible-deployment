@@ -1,0 +1,12 @@
+---
+
+- import_playbook: setup.yml
+
+- hosts: binome
+  become: true
+  roles:
+    - nodejs
+    - pole-emploi
+  post_tasks:
+    - debug:
+        msg: "Pôle Emploi is now configured and available at https://{{ pole_emploi_domain }}/ and https://{{ pole_emploi_domain }}/notifications.html !"

@@ -1,0 +1,8 @@
+server {
+	include includes/listen-http;
+	include includes/acme-challenge;
+	include includes/common;
+	server_name _;
+	access_log /var/log/nginx/http_redirect.access.log;
+	error_log /var/log/nginx/http_redirect.error.log;
+}

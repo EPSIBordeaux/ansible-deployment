@@ -1,0 +1,56 @@
+---
+
+- name: Ensure NodeJS required packages are installed.
+  apt: 
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - build-essential
+    - libssl-dev
+    - apt-transport-https
+
+- name: Add Nodesource apt key.
+  apt_key:
+    url: https://keyserver.ubuntu.com/pks/lookup?op=get&fingerprint=on&search=0x1655A0AB68576280
+    id: "68576280"
+    state: present
+
+- name: Add Node repositories.
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+  with_items:
+    - "deb https://deb.nodesource.com/node_{{ nodejs_version }} {{ ansible_distribution_release }} main"
+    - "deb-src https://deb.nodesource.com/node_{{ nodejs_version }} {{ ansible_distribution_release }} main"
+  register: node_repo
+
+- name: Update APT cache if needed
+  apt: 
+    update_cache: yes
+    force_apt_get: True
+  when: node_repo.changed
+
+- name: Ensure Node.js and npm are installed.
+  apt:
+    name: nodejs={{ nodejs_version|regex_replace('x', '') }}* 
+    state: present
+    force_apt_get: True
+
+- name: Create a NodeJS User
+  user:
+    name: "{{ nodejs_user }}"
+    state: present
+    system: yes
+
+- name: Create npm global directory
+  file:
+    path: "{{ npm_config_prefix }}"
+    owner: "{{ nodejs_user }}"
+    group: "{{ nodejs_user }}"
+    state: directory
+
+- name: Add npm_config_prefix bin directory to global $PATH.
+  template:
+    src: npm.sh.j2
+    dest: /etc/profile.d/npm.sh
+    mode: 0644
