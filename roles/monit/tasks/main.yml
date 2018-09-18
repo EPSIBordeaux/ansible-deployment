@@ -1,0 +1,49 @@
+---
+- name: Install Monit
+  apt:
+    name: monit
+    state: present
+    force_apt_get: True
+
+- include: configuration.yml
+
+- include: nginx_http_setup.yml
+
+# This step is VERY important because it will triggers all triggered handlers to run. 
+# We need to reload nginx before getting 
+- meta: flush_handlers
+
+- name: Create letsencrypt certificate
+  shell: "certbot certonly --rsa-key-size 4096 --webroot -w /var/www/acme-challenges/ -m {{ letsencrypt_email }} --agree-tos -d {{ monit_status_domain }} --non-interactive"
+  args:
+    creates: "/etc/letsencrypt/live/{{ monit_status_domain }}"
+
+- name: Create monit vhost sites-available
+  template:
+    src: ../templates/monit.j2
+    dest: "/etc/nginx/sites-available/{{monit_status_domain}}.conf"
+    owner: root
+    group: root
+    mode: 0600
+  vars:
+    domain: "{{ monit_status_domain }}"
+  notify: 'restart nginx'
+
+- name: Enable monit site
+  file: 
+    src: "/etc/nginx/sites-available/{{monit_status_domain}}.conf"
+    dest: "/etc/nginx/sites-enabled/{{monit_status_domain}}.conf"
+    state: link
+  notify: 'restart nginx'
+
+- name: Disable acme challenge site
+  file: 
+    path: "/etc/nginx/sites-available/acme.conf"
+    state: absent
+  notify: 'restart nginx'
+
+- name: Add certbot cronjob for cert renewal
+  cron:
+    name: monit_letsencrypt_renewal
+    special_time: weekly
+    job: "certbot renew --non-interactive --post-hook 'service nginx reload'"

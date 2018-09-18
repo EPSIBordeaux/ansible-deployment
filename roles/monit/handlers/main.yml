@@ -1,0 +1,16 @@
+---
+
+- name: restart nginx
+  systemd:
+    name: 'nginx'
+    enabled: true
+    state: 'restarted'
+  listen: "restart nginx"
+
+- name: restart monit
+  systemd: 
+    name: "monit"
+    enabled: true
+    state: "restarted"
+  listen: "restart monit"
+  

@@ -1,0 +1,47 @@
+- name: Harden sshd configuration
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "{{item.regexp}}"
+    line: "{{item.line}}"
+    state: present
+  with_items:
+    - regexp: "^#?PermitRootLogin"
+      line: "PermitRootLogin no"
+    - regexp: "^^#?PasswordAuthentication"
+      line: "PasswordAuthentication no"
+    - regexp: "^#?AllowAgentForwarding"
+      line: "AllowAgentForwarding no"
+    - regexp: "^#?AllowTcpForwarding"
+      line: "AllowTcpForwarding no"
+    - regexp: "^#?MaxAuthTries"
+      line: "MaxAuthTries 2"
+    - regexp: "^#?MaxSessions"
+      line: "MaxSessions 3"
+    - regexp: "^#?TCPKeepAlive"
+      line: "TCPKeepAlive no"
+    - regexp: "^#?UseDNS"
+      line: "UseDNS no"
+    - regexp: "^#?AllowAgentForwarding"
+      line: "AllowAgentForwarding no"
+    - regexp: "^#?AllowGroups"
+      line: "AllowGroups binome"
+    - regexp: "^#?ListenAddress"
+      line: "ListenAddress 0.0.0.0"
+    - regexp: "^#?Port"
+      line: "Port 22"
+    - regexp: "^#?PubkeyAuthentication"
+      line: "PubkeyAuthentication yes"
+    - regexp: "^#?X11Forwarding"
+      line: "X11Forwarding no"
+    - regexp: "^#?PrintMotd"
+      line: "PrintMotd no"
+  notify: restart ssh
+
+- include: fail2ban.yml
+
+- include: iptables.yml
+
+- name: Setup custom motd
+  copy:
+    src: ../files/custom_motd
+    dest: /etc/motd

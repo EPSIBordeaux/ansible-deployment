@@ -1,0 +1,10 @@
+---
+
+- include: packages.yml
+- include: unattended.yml
+- include: locales.yml
+- include: users.yml
+- include: custom_bin.yml
+- include: hostname.yml
+
+

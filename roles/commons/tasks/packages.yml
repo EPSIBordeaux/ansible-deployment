@@ -1,0 +1,28 @@
+---
+- name: Upgrade all packages to the latest version
+  apt:
+    upgrade: yes
+    cache_valid_time: 86400
+    update_cache: yes
+    force_apt_get: True
+    state: latest
+
+- name: "Install common packages"
+  apt: 
+    name: "{{item}}"
+    state: present
+    force_apt_get: True
+  with_items:
+    - sudo
+    - vim
+    - git
+    - htop
+    - apt-transport-https
+    - ca-certificates
+    - nginx
+    - whois
+    - rsync
+    - unzip
+    - figlet
+  notify:
+    - "restart nginx"

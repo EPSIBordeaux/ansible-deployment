@@ -1,0 +1,2 @@
+fail2ban_receiver_mail: you@email.com
+fail2ban_sender_email: no-reply@email.com

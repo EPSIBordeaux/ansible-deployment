@@ -1,0 +1,32 @@
+---
+
+- name: Creates ACME directory
+  file:
+    path: /var/www/acme-challenges/
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: 0775
+
+- name: Enable backport repository
+  apt_repository:
+    repo: "deb http://ftp.debian.org/debian {{ ansible_distribution_release }}-backports main contrib non-free"
+    state: present
+
+- name: Update the repository cache and install certbot (jessie)
+  apt:
+    name: certbot
+    state: latest
+    default_release: "{{ ansible_distribution_release }}-backports"
+    update_cache: yes
+    cache_valid_time: 86400
+  when: ansible_distribution_release == "jessie"
+
+- name: Update the repository cache and install certbot (stretch)
+  apt:
+    name: python-certbot-nginx
+    state: latest
+    default_release: stretch-backports
+    update_cache: yes
+    cache_valid_time: 86400
+  when: ansible_distribution_release == "stretch"

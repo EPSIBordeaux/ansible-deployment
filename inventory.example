@@ -1,0 +1,11 @@
+all:
+    hosts:
+        host-root:
+            ansible_port: 22
+            ansible_host: YOUR_DOMAIN
+            ansible_user: root
+        host:
+            ansible_port: 22
+            ansible_host: YOUR_DOMAIN
+            ansible_user: YOUR_USER_SEE_GROUPS_VAR_ALL
+

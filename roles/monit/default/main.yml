@@ -1,0 +1,7 @@
+monit_smtp_url: SMTP_URL
+monit_smtp_port: SMTP_PORT
+monit_smtp_password: secure-password
+monit_smtp_user: sender@email.com
+monit_smtp_recipient: recipient@email.com
+monit_httpd_password: web_interface_password
+monit_status_domain: status.epsi-bordeaux.fr

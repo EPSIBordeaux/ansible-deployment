@@ -1,0 +1,13 @@
+---
+- hosts: binome
+  become: true
+
+  roles:
+    - role: commons
+    - role: security
+    - role: nginx-certbot
+
+  post_tasks:
+    - debug:
+        msg: "Basic Setup Done !"
+

@@ -1,0 +1,32 @@
+---
+
+- name: Clone Custom Bin Repository
+  git:
+    repo: 'https://github.com/sylvainmetayer/bin.git'
+    dest: /opt/custom_bin
+
+# Only simple word, without "." or whathever and exclude "LICENSE" file. 
+# This way, we match all scripts
+- name: Find all managed scripts
+  find:
+    paths: /opt/custom_bin/
+    patterns: '^[^LICENSE|\.]\w+$'
+    use_regex: yes
+  register: custom_bin_files
+
+- name: Ensure permissions of Custom Bin Repository
+  file:
+    dest: "{{ item.path }}"
+    owner: root
+    group: binome
+    mode: 0775
+  with_items: 
+    - "{{ custom_bin_files.files }}"
+
+- name: Update path with bin git repo
+  lineinfile:
+    dest: "/home/{{ item }}/.profile"
+    state: present
+    line: 'PATH=$PATH:/opt/custom_bin'
+  with_items: 
+    - "{{ users }}"

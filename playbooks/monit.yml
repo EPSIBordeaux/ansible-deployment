@@ -1,0 +1,11 @@
+---
+
+- import_playbook: setup.yml
+
+- hosts: binome
+  become: true
+  roles:
+    - monit
+  post_tasks:
+    - debug:
+        msg: "Monit is now configured and available at https://{{ monit_status_domain }}/ !"

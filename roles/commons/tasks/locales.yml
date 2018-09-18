@@ -1,0 +1,14 @@
+---
+# Module LOCALE_GEN: http://docs.ansible.com/ansible/latest/locale_gen_module.html
+- name: Locales generation
+  locale_gen:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ locales }}" 
+
+# Module LINEINFILE: http://docs.ansible.com/ansible/latest/lineinfile_module.html
+- name: Set default locale
+  lineinfile:
+    dest:   /etc/default/locale
+    regexp: "LANG="
+    line:   "LANG={{ default_locale }}"

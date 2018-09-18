@@ -1,0 +1,11 @@
+users:
+  - test
+  - test2
+
+ssh_keys:
+  test:
+    - "YOUR_SSH_KEY_HERE"
+  test2:
+    - "YOUR_SSH_KEY_HERE"
+    - "ANOTHER_ONE"
+
