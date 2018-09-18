@@ -1,5 +1,5 @@
 *.retry
 inventory
 logs/
-group_vars/
+group_vars/*
 !group_vars/*.example   

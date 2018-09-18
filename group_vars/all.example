@@ -1,0 +1,50 @@
+---
+
+# Users
+users:
+    - USER_A
+    - USER_B
+ssh_keys:
+    ocyhc:
+        - "PASTE_KEY"
+        - "PASTE_MORE_KEY"
+    oriamn:
+        - "PASTE_KEY"
+
+# Fail2Ban
+fail2ban_receiver_mail: EMAIL
+fail2ban_sender_email: EMAIL
+
+# Monit
+monit_smtp_url: SMTP
+monit_smtp_port: PORT
+monit_smtp_password: XXX
+monit_smtp_user: EMAIL
+monit_smtp_recipient: EMAIL
+monit_httpd_password: XXX
+monit_status_domain: EMAIL
+
+# Let's encrypt
+letsencrypt_email: EMAIL
+
+# Locales
+locales: 
+    - fr_FR.UTF-8
+    - en_US.UTF-8
+default_locale: fr_FR.UTF-8
+timezone: Europe/Paris
+
+# Hostname
+default_ip: IP
+fqdn: URL
+hostname: URL
+
+# Pole Emploi
+pole_emploi_domain: DOMAIN.URL
+pole_emploi_description: DESC
+pole_emploi_port: 3001
+
+# NodeJS
+nodejs_version: 10.x
+npm_config_prefix: "/usr/local/lib/npm"
+nodejs_user: some_user_that_will_be_node
