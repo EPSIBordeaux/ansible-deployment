@@ -17,7 +17,6 @@
     group: "{{ nodejs_user }}" 
     mode: u=rwX,g=rX,o=rX
     recurse: yes
-  become: yes
 
 - name: Create configuration file for server
   template:
