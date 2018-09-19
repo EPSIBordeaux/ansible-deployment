@@ -19,7 +19,7 @@
   vars:
     certbot_domain: "{{ pong_server_domain }}"
 
-- name: Create pole emploi vhost sites-available
+- name: Create pong server vhost sites-available
   template:
     src: ../templates/pong.conf.j2
     dest: "/etc/nginx/sites-available/{{pong_server_domain}}.conf"
@@ -30,7 +30,7 @@
     domain: "{{ pong_server_domain }}"
   notify: 'restart nginx'
 
-- name: Enable pole emploi site
+- name: Enable pong server site
   file: 
     src: "/etc/nginx/sites-available/{{pong_server_domain}}.conf"
     dest: "/etc/nginx/sites-enabled/{{pong_server_domain}}.conf"
