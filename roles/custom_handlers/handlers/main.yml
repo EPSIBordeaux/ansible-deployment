@@ -32,3 +32,9 @@
     state: restarted
     name: fail2ban
   listen: "restart fail2ban"
+
+- name: restart php
+  systemd:
+    state: restarted
+    name: php7.2-fpm
+  listen: "restart php"

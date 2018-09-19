@@ -1,0 +1,39 @@
+---
+
+- name: Clone Pong Server repository
+  git:
+    repo: 'https://github.com/BinomeEPSI/temps-reel-server.git'
+    dest: "/var/www/{{ pong_server_domain}}"
+
+- name: Set permissions on Pong Server Repository
+  file:
+    path: "/var/www/{{ pong_server_domain }}"
+    state: directory
+    owner: "www-data" 
+    group: "www-data" 
+    mode: u=rwX,g=rX,o=rX
+    recurse: yes
+
+- include_role:
+    name: certbot_challenge
+  vars:
+    certbot_domain: "{{ pong_server_domain }}"
+
+- name: Create pole emploi vhost sites-available
+  template:
+    src: ../templates/pong.conf.j2
+    dest: "/etc/nginx/sites-available/{{pong_server_domain}}.conf"
+    owner: root
+    group: root
+    mode: 0600
+  vars:
+    domain: "{{ pong_server_domain }}"
+  notify: 'restart nginx'
+
+- name: Enable pole emploi site
+  file: 
+    src: "/etc/nginx/sites-available/{{pong_server_domain}}.conf"
+    dest: "/etc/nginx/sites-enabled/{{pong_server_domain}}.conf"
+    state: link
+  notify: 'restart nginx'
+

@@ -43,7 +43,6 @@
     path: "/etc/nginx/sites-available/acme.conf"
     state: absent
   notify: 'restart nginx'
-  when: certbot_certificate.stat.exists == false
 
 - name: Ensure Let's Encrypt cron job renewal is setup
   cron:
