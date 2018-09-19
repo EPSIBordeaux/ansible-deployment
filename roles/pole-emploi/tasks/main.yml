@@ -19,7 +19,6 @@
     recurse: yes
   become: yes
 
-# TODO
 - name: Create configuration file for server
   template:
     src: app-config.js.j2
@@ -28,7 +27,6 @@
     group: "{{ nodejs_user }}"
     mode: 0644
 
-# TODO
 - name: Create configuration file for front-end
   template:
     src: pe-js-config.js.j2

@@ -1,0 +1,52 @@
+---
+
+- name: Check if a certificate already exists
+  stat: 
+    path: "/etc/letsencrypt/live/{{ certbot_domain }}"
+  register: certbot_certificate
+
+- name: Create acme challenge vhost in sites-available
+  template:
+    src: ../templates/acme_challenge.j2
+    dest: "/etc/nginx/sites-available/acme.conf"
+    owner: root
+    group: root
+    mode: 0600
+  notify: 'restart nginx'
+  when: certbot_certificate.stat.exists == false
+
+- name: Ensure default vhost is absent
+  file: 
+    path: "/etc/nginx/sites-enabled/default"
+    state: absent
+  notify: 'restart nginx'
+
+- name: Enable HTTP redirect for ACME Challenge
+  file: 
+    src: "/etc/nginx/sites-available/acme.conf"
+    dest: "/etc/nginx/sites-enabled/acme.conf"
+    state: link
+  notify: 'restart nginx'
+  when: certbot_certificate.stat.exists == false
+
+# This step is VERY important because it will triggers all triggered handlers to run. 
+# We need to reload nginx before getting Let's encrypt certificate
+- meta: flush_handlers
+
+- name: Create Let's Encrypt certificate
+  shell: "certbot certonly --rsa-key-size 4096 --webroot -w /var/www/acme-challenges/ -m {{ letsencrypt_email }} --agree-tos -d {{ certbot_domain }} --non-interactive"
+  args:
+    creates: "/etc/letsencrypt/live/{{ certbot_domain }}"
+
+- name: Disable acme challenge site
+  file: 
+    path: "/etc/nginx/sites-available/acme.conf"
+    state: absent
+  notify: 'restart nginx'
+  when: certbot_certificate.stat.exists == false
+
+- name: Ensure Let's Encrypt cron job renewal is setup
+  cron:
+    name: letsencrypt_renewal
+    special_time: weekly
+    job: "certbot renew --non-interactive --post-hook 'service nginx reload'"
