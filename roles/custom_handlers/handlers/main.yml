@@ -1,5 +1,19 @@
 ---
 
+- name: restart nginx
+  systemd:
+    name: 'nginx'
+    enabled: true
+    state: 'restarted'
+  listen: "restart nginx"
+
+- name: restart monit
+  systemd: 
+    name: "monit"
+    enabled: true
+    state: "restarted"
+  listen: "restart monit"
+  
 - name: restart ssh
   systemd:
     name: 'ssh'
@@ -13,7 +27,7 @@
     name: fail2ban
   listen: "enable fail2ban"
 
-- name: restartfail2ban
+- name: restart fail2ban
   systemd:
     state: restarted
     name: fail2ban
