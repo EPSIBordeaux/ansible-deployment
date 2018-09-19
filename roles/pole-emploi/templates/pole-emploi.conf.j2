@@ -15,6 +15,12 @@ server {
 	root /opt/pole-emploi/;
 	index index.html;
 
+	add_header Content-Security-Policy "frame-ancestors 'none'; default-src 'unsafe-inline' 'none' 'self' https:; object-src 'none'";
+	add_header X-Frame-Options DENY;
+	add_header X-Content-Type-Options nosniff;
+	add_header X-XSS-Protection "1; mode=block";
+	add_header Referrer-Policy "no-referrer, strict-origin-when-cross-origin";
+
 	include includes/acme-challenge;
 	include includes/common;
 
