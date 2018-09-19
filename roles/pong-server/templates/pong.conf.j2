@@ -1,0 +1,39 @@
+map $http_user_agent $log_ua {
+	~Monit 0;
+	~UptimeRobot/2.0 0;
+
+	default 1; 
+}
+
+server {
+	include includes/listen-https;
+	server_name {{ pong_server_domain }};
+	root /var/www/{{ pong_server_domain }};
+	index index.php;
+
+	include includes/acme-challenge;
+	include includes/common;
+    include includes/php;
+
+	access_log /var/log/nginx/{{ pong_server_domain }}.access.log combined if=$log_ua;
+	error_log /var/log/nginx/{{ pong_server_domain }}.error.log;
+
+    location / {
+        try_files $uri /index.php$is_args$args;
+    }
+
+	include includes/ssl-stapling;
+	include includes/ssl-hsts;
+
+	ssl_certificate         /etc/letsencrypt/live/{{ pong_server_domain }}/fullchain.pem;
+	ssl_certificate_key     /etc/letsencrypt/live/{{ pong_server_domain }}/privkey.pem;
+	ssl_trusted_certificate /etc/letsencrypt/live/{{ pong_server_domain }}/chain.pem;
+}
+
+server {
+	include includes/listen-http;
+	include includes/acme-challenge;
+	include includes/common;
+	server_name {{ pong_server_domain }};
+	return 301 https://$host$request_uri;
+}
