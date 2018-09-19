@@ -1,0 +1,15 @@
+---
+
+- import_playbook: setup.yml
+
+- hosts: binome
+  become: true
+  roles:
+    - monit
+    - nodejs
+    - pole-emploi
+  post_tasks:
+    - debug:
+        msg: "Monit is now configured and available at https://{{ monit_status_domain }}/ !"
+    - debug:
+        msg: "Pôle Emploi is now configured and available at https://{{ pole_emploi_domain }}/ and https://{{ pole_emploi_domain }}/notifications.html !"
