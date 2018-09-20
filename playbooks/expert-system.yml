@@ -1,0 +1,12 @@
+---
+
+# - import_playbook: setup.yml
+
+- hosts: binome
+  become: true
+  roles:
+    - nodejs
+    - expert-system
+  post_tasks:
+    - debug:
+        msg: "Expert System is now configured and available at https://{{ expert_system_domain }}"

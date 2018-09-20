@@ -48,3 +48,11 @@ pole_emploi_port: 3001
 nodejs_version: 10.x
 npm_config_prefix: "/usr/local/lib/npm"
 nodejs_user: some_user_that_will_be_node
+
+# Pong Server
+pong_server_domain: URL.COM
+
+# Expert System
+expert_system_domain: URL.Com
+expert_system_description: DESC
+expert_system_port: 3002

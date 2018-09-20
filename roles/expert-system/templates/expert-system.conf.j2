@@ -1,0 +1,52 @@
+map $http_user_agent $log_ua {
+	~Monit 0;
+	~UptimeRobot/2.0 0;
+
+	default 1; 
+}
+
+upstream expert-system {
+	server 127.0.0.1:{{ expert_system_port }};
+}
+
+server {
+	include includes/listen-https;
+	server_name {{ expert_system_domain }};
+
+	include includes/acme-challenge;
+	include includes/common;
+
+	add_header Content-Security-Policy "frame-ancestors 'none'; script-src 'self'; object-src 'none'";
+	add_header X-Frame-Options DENY;
+	add_header X-Content-Type-Options nosniff;
+	add_header X-XSS-Protection "1; mode=block";
+	add_header Referrer-Policy "no-referrer, strict-origin-when-cross-origin";
+
+	access_log /var/log/nginx/{{ expert_system_domain }}.access.log combined if=$log_ua;
+	error_log /var/log/nginx/{{ expert_system_domain }}.error.log;
+
+	location / {
+	    proxy_set_header X-Real-IP $remote_addr;
+  	    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  	    proxy_set_header X-Forwarded-Proto $scheme;
+  	    proxy_set_header Host $host;
+ 	    proxy_set_header X-NginX-Proxy true;
+		proxy_pass http://expert-system;
+	    proxy_redirect off;
+	}
+
+	include includes/ssl-stapling;
+	include includes/ssl-hsts;
+
+	ssl_certificate         /etc/letsencrypt/live/{{ expert_system_domain }}/fullchain.pem;
+	ssl_certificate_key     /etc/letsencrypt/live/{{ expert_system_domain }}/privkey.pem;
+	ssl_trusted_certificate /etc/letsencrypt/live/{{ expert_system_domain }}/chain.pem;
+}
+
+server {
+	include includes/listen-http;
+	include includes/acme-challenge;
+	include includes/common;
+	server_name {{ expert_system_domain }};
+	return 301 https://$host$request_uri;
+}
