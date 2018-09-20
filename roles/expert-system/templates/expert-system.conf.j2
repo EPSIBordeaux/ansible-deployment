@@ -12,16 +12,20 @@ upstream expert-system {
 server {
 	include includes/listen-https;
 	server_name {{ expert_system_domain }};
-	# root /var/www/acme-challenges;
-	index index.html;
 
 	include includes/acme-challenge;
 	include includes/common;
 
+	add_header Content-Security-Policy "frame-ancestors 'none'; script-src 'self'; object-src 'none'";
+	add_header X-Frame-Options DENY;
+	add_header X-Content-Type-Options nosniff;
+	add_header X-XSS-Protection "1; mode=block";
+	add_header Referrer-Policy "no-referrer, strict-origin-when-cross-origin";
+
 	access_log /var/log/nginx/{{ expert_system_domain }}.access.log combined if=$log_ua;
 	error_log /var/log/nginx/{{ expert_system_domain }}.error.log;
 
-	location ~ ^/ws {
+	location / {
 	    proxy_set_header X-Real-IP $remote_addr;
   	    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
   	    proxy_set_header X-Forwarded-Proto $scheme;
