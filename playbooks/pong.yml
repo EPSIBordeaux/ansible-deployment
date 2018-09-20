@@ -1,6 +1,6 @@
 ---
 
-# - import_playbook: setup.yml
+- import_playbook: setup.yml
 
 - hosts: binome
   become: true
