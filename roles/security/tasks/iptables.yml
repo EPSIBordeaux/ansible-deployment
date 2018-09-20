@@ -195,6 +195,20 @@
     chain: INPUT
     jump: ACCEPT
 
+- name: Allow outgoing Github traffic on port 9418 TCP
+  iptables:
+    destination_port: 9418
+    protocol: tcp
+    chain: OUTPUT
+    jump: ACCEPT
+
+- name: Allow incoming Github traffic on port 9418 TCP
+  iptables:
+    destination_port: 9418
+    protocol: tcp
+    chain: INPUT
+    jump: ACCEPT
+
 - name: Set default Policy Rule to DROP on INPUT Chain
   iptables:
     chain: INPUT
