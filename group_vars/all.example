@@ -56,3 +56,6 @@ pong_server_domain: URL.COM
 expert_system_domain: URL.Com
 expert_system_description: DESC
 expert_system_port: 3002
+
+# Machine Learning
+machine_learning_domain: DOMAIN.FR

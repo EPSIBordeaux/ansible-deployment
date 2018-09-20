@@ -1,0 +1,39 @@
+---
+
+- name: Clone Machine Learning repository
+  git:
+    repo: 'https://github.com/BinomeEPSI/machine-learning.git'
+    dest: "/var/www/{{ machine_learning_domain }}"
+
+- name: Set permissions on Machine Learning Repository
+  file:
+    path: "/var/www/{{ machine_learning_domain }}"
+    state: directory
+    owner: "www-data" 
+    group: "www-data" 
+    mode: u=rwX,g=rX,o=rX
+    recurse: yes
+
+- include_role:
+    name: certbot_challenge
+  vars:
+    certbot_domain: "{{ machine_learning_domain }}"
+
+- name: Create machine learning vhost sites-available
+  template:
+    src: ../templates/machine-learning.conf.j2
+    dest: "/etc/nginx/sites-available/{{machine_learning_domain}}.conf"
+    owner: root
+    group: root
+    mode: 0600
+  vars:
+    domain: "{{ machine_learning_domain }}"
+  notify: 'restart nginx'
+
+- name: Enable machine learning site
+  file: 
+    src: "/etc/nginx/sites-available/{{machine_learning_domain}}.conf"
+    dest: "/etc/nginx/sites-enabled/{{machine_learning_domain}}.conf"
+    state: link
+  notify: 'restart nginx'
+
