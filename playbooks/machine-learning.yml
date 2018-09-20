@@ -1,0 +1,12 @@
+---
+
+# - import_playbook: setup.yml
+
+- hosts: binome
+  become: true
+  roles:
+    - php7.2
+    - machine-learning
+  post_tasks:
+    - debug:
+        msg: "Machine Learning is now configured and available at https://{{ machine_learning_domain }}/ !"

@@ -10,6 +10,7 @@
     - pole-emploi
     - php7.2
     - pong-server
+    # - machine-learning
   post_tasks:
     - debug:
         msg: "Monit is now configured and available at https://{{ monit_status_domain }}/ !"
@@ -17,3 +18,5 @@
         msg: "Pôle Emploi is now configured and available at https://{{ pole_emploi_domain }}/ and https://{{ pole_emploi_domain }}/notifications.html !"
     - debug:
         msg: "Pong API is now configured and available at https://{{ pong_server_domain }}/ and you can play it at https://binomeepsi.github.io/temps-reel/ !"
+    #- debug:
+    #    msg: "Machine Learning is now configured and available at https://{{ machine_learning_domain }}/ !"
