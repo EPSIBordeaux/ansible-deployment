@@ -59,3 +59,8 @@ expert_system_port: 3002
 
 # Machine Learning
 machine_learning_domain: DOMAIN.FR
+
+# Codi MD
+codimd_domain: DOMAIN.FR
+codimd_description: DESC
+codimd_port: 3003

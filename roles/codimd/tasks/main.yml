@@ -1,0 +1,85 @@
+---
+
+- name: "Clone CodiMD repository at Tag {{ codimd_tag }}"
+  git:
+    repo: 'https://github.com/hackmdio/codimd.git'
+    dest: /opt/codimd
+    version: "{{ codimd_tag }}"
+
+- name: Create .sequelizerc file
+  template:
+    src: .sequelizerc.j2
+    dest: /opt/codimd/.sequelizerc
+    owner: "{{ nodejs_user }}"
+    group: "{{ nodejs_user }}"
+    mode: 0644
+
+- name: Create configuration file for front-end
+  template:
+    src: config.json.j2
+    dest: /opt/codimd/config.json
+    owner: "{{ nodejs_user }}"
+    group: "{{ nodejs_user }}"
+    mode: 0644
+
+- name: Set permissions on CodiMD Repository
+  file:
+    path: /opt/codimd
+    state: directory
+    owner: "{{ nodejs_user }}" 
+    group: "{{ nodejs_user }}" 
+    mode: u=rwX,g=rX,o=rX
+    recurse: yes
+
+- name: Install dependencies
+  npm:
+    path: /opt/codimd
+    production: yes
+  become: yes
+  become_user: "{{ nodejs_user }}"
+
+- name: Build production assets
+  command: npm run build
+  args: 
+      chdir: /opt/codimd
+      creates: /opt/codimd/public/build
+  register: codimd_assets
+
+- name: Migrate Database
+  command: ./node_modules/.bin/sequelize db:migrate
+  args: 
+      chdir: /opt/codimd
+  when: codimd_assets.changed
+
+- name: "Create user {{ item }}"
+  command: "bin/manage_users --pass {{ item }} --add {{ item }}"
+  args: 
+      chdir: /opt/codimd
+  with_items: "{{ codimd_users }}"
+  when: codimd_assets.changed
+
+- name: Set permissions on CodiMD Repository
+  file:
+    path: /opt/codimd
+    state: directory
+    owner: "{{ nodejs_user }}" 
+    group: "{{ nodejs_user }}" 
+    mode: u=rwX,g=rX,o=rX
+    recurse: yes
+
+- name: Create service file 
+  template:
+    src: codimd.service.j2
+    dest: /etc/systemd/system/codimd.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Start CodiMD Node Server and set it boot by default
+  systemd:
+    state: started
+    enabled: true
+    daemon_reload: yes
+    name: poleemploi.service
+
+- include: nginx_configuration.yml

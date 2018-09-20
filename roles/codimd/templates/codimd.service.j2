@@ -1,0 +1,20 @@
+[Unit]
+Description={{ codimd_description }}
+
+[Service]
+ExecStart=/usr/bin/node /opt/codimd/app.js
+# Required on some systems
+#WorkingDirectory=/opt/codimd
+Restart=always
+ # Restart service after 10 seconds if node service crashes
+ RestartSec=10
+ # Output to syslog
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=nodejs-example
+User={{ nodejs_user }}
+#Group=<alternate group>
+Environment=NODE_ENV=production PORT={{ codimd_port }} PROCESS_NAME=codi-md
+
+[Install]
+WantedBy=multi-user.target

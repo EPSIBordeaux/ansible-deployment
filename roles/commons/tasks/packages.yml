@@ -24,4 +24,5 @@
     - rsync
     - unzip
     - figlet
+    - make
   notify: restart nginx
