@@ -1,6 +1,9 @@
 {
     "production": {
         "domain": "{{ codimd_domain }}",
+        "allowOrigin" : "{{ codimd_domain }}",
+        "email": true,
+        "allowEmailRegister" : true,
         "hsts": {
             "enable": true,
             "maxAgeSeconds": "31536000",

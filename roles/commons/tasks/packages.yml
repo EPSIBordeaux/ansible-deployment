@@ -25,4 +25,5 @@
     - unzip
     - figlet
     - make
+    - gcc
   notify: restart nginx

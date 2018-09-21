@@ -31,12 +31,12 @@
     mode: u=rwX,g=rX,o=rX
     recurse: yes
 
+# FIXME Not a pretty solution
+# http://www.markusz.io/posts/2018/01/19/ansible-env-var-non-root/#ansunprev
 - name: Install dependencies
-  npm:
-    path: /opt/codimd
-    production: yes
-  become: yes
-  become_user: "{{ nodejs_user }}"
+  command: "sudo -u {{ nodejs_user }} npm install"
+  args:
+    chdir: /opt/codimd
 
 - name: Build production assets
   command: npm run build
@@ -49,14 +49,14 @@
   command: ./node_modules/.bin/sequelize db:migrate
   args: 
       chdir: /opt/codimd
-  when: codimd_assets.changed
+  # when: codimd_assets.changed
 
-- name: "Create user {{ item }}"
-  command: "bin/manage_users --pass {{ item }} --add {{ item }}"
-  args: 
-      chdir: /opt/codimd
-  with_items: "{{ codimd_users }}"
-  when: codimd_assets.changed
+#- name: "Create user {{ item }}"
+#  command: "bin/manage_users --pass {{ item }} --add {{ item }}"
+#  args: 
+#      chdir: /opt/codimd
+#  with_items: "{{ codimd_users }}"
+#  when: codimd_assets.changed
 
 - name: Set permissions on CodiMD Repository
   file:
@@ -80,6 +80,6 @@
     state: started
     enabled: true
     daemon_reload: yes
-    name: poleemploi.service
+    name: codimd.service
 
 - include: nginx_configuration.yml
