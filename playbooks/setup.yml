@@ -6,7 +6,9 @@
     - role: commons
     - role: security
     - role: nginx-certbot
-
+    - role: docker
+    - role: nodejs
+    - role: php7.2
   post_tasks:
     - debug:
         msg: "Basic Setup Done !"

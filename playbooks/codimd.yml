@@ -1,0 +1,12 @@
+---
+
+# - import_playbook: setup.yml
+
+- hosts: binome
+  become: true
+  roles:
+    - docker
+    - codimd
+  post_tasks:
+    - debug:
+        msg: "Codi MD is now configured and available at https://{{ codimd_domain }}/ !"

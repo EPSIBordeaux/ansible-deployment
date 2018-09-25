@@ -24,4 +24,11 @@
     - rsync
     - unzip
     - figlet
+    - make
+    - gcc
+    - software-properties-common
+    - gnupg2
+    - cron
+    - sendmail
+    - curl
   notify: restart nginx
