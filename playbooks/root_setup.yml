@@ -8,5 +8,5 @@
 
   post_tasks:
     - debug:
-        msg: "Minimal setup has been done. Root can't connect anymore, connect with created user and relaunch main playbook."
+        msg: "Minimal setup has been done. Root can't connect anymore, connect with created user and launch setup playbook."
 

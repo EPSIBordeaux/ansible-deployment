@@ -2,21 +2,14 @@
 
 - import_playbook: setup.yml
 
-- hosts: binome
-  become: true
-  roles:
-    - monit
-    - nodejs
-    - pole-emploi
-    - php7.2
-    - pong-server
-    # - machine-learning
-  post_tasks:
-    - debug:
-        msg: "Monit is now configured and available at https://{{ monit_status_domain }}/ !"
-    - debug:
-        msg: "Pôle Emploi is now configured and available at https://{{ pole_emploi_domain }}/ and https://{{ pole_emploi_domain }}/notifications.html !"
-    - debug:
-        msg: "Pong API is now configured and available at https://{{ pong_server_domain }}/ and you can play it at https://binomeepsi.github.io/temps-reel/ !"
-    #- debug:
-    #    msg: "Machine Learning is now configured and available at https://{{ machine_learning_domain }}/ !"
+- import_playbook: applications/monit.yml
+
+- import_playbook: applications/expert-system.yml
+
+- import_playbook: applications/machine-learning.yml
+
+- import_playbook: applications/pole-emploi.yml
+
+- import_playbook: applications/pong.yml
+
+- import_playbook: applications/codimd.yml
