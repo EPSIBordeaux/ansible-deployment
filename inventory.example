@@ -1,11 +1,11 @@
 all:
     hosts:
-        host-root:
+        binome-root:
             ansible_port: 22
-            ansible_host: YOUR_DOMAIN
+            ansible_host: ssh.epsi-bordeaux.fr
             ansible_user: root
-        host:
+        binome:
             ansible_port: 22
-            ansible_host: YOUR_DOMAIN
-            ansible_user: YOUR_USER_SEE_GROUPS_VAR_ALL
+            ansible_host: ssh.epsi-bordeaux.fr
+            ansible_user: ocyhc
 
