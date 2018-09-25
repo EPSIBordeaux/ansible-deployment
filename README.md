@@ -6,49 +6,55 @@
 
 2. Copy `group_vars/all.example` as `group_vars/all` and edit it to fit your needs.
 
-### From a new server with root access
+### Root Setup
+
+- Check Server fingerprint, accept it if it match and exit
+
+    ```bash
+    ssh USER@SERVER
+    ```
+
+- Run root playbook
+
+    ```bash
+    ansible-playbook playbooks/root_setup.yml -k
+    ```
+
+    This command will run the `root_setup` playbook and ask for your root password.
+
+    After this playbook succed, you'll no longer be able to run it again, because password authentication is now forbidden.
+
+- You'll need to use the `setup` playbook with the user you just created
+
+    ```bash
+    ssh USER@SERVER
+    # change your password
+    ```
+
+    > Your password is your username, so you better change it fast, even if you still need your SSH key to connect !
+
+### Basic Setup
 
 ```bash
-ssh USER@SERVER
-# Check key authentication and exit
+ansible-playbook playbooks/setup.yml -K
 ```
+
+> Precise your SUDO password.
+
+### Install an application
+
+**Make sure you've runned the `Basic Setup` first, otherwise
 
 ```bash
-ansible-playbook playbooks/root_setup.yml -k
+ansible-playbook playbooks/applications/monit.yml -K
 ```
 
-This command will run the `root_setup` playbook and ask for your root password. 
+> Precise your SUDO password.
 
-Tasks that will be executed with this playbook are :
-
-- Install required packages
-- Enabled unattended updates
-- Setup locale
-- Create users
-- Add custom bin folder
-- Setup hostname
-
-After this playbook succed, you'll no longer be able to run it again, because password authentication is not forbidden.
-
-You'll need to use the `setup` playbook with the user you just created
+### Install all
 
 ```bash
-ssh USER@SERVER
-# change your password
+ansible-playbook playbooks/all.yml -K
 ```
 
-### Next usage
-
-```bash
-ansible-playbook playbooks/root_setup.yml -K
-```
-
-Precise your SUDO password.
-
-### Install monit
-
-```bash
-ansible-playbook playbooks/monit.yml -K
-```
-
-Precise your SUDO password.
+> Precise your SUDO password.
