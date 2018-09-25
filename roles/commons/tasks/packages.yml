@@ -30,4 +30,5 @@
     - gnupg2
     - cron
     - sendmail
+    - curl
   notify: restart nginx
