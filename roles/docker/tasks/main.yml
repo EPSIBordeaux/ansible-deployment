@@ -30,9 +30,15 @@
     name: "{{ item }}"
   with_items:
     - docker-compose
-    - docker-py
-    # - docker
+    #- docker-py
+    - docker
     # - setuptools
+
+# See https://github.com/ansible/ansible/issues/37200#issuecomment-381158216
+- name: Install Pip Requests for PIP
+  pip:
+    name: requests
+    version: 2.18.1
 
 - name: Add user(s) to "docker" group
   user:
