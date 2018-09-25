@@ -62,5 +62,9 @@ machine_learning_domain: DOMAIN.FR
 
 # Codi MD
 codimd_domain: DOMAIN.FR
-codimd_description: DESC
 codimd_port: 3003
+
+# Docker
+docker_users: 
+    - oriamn
+    - ocyhc

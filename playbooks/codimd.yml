@@ -5,7 +5,7 @@
 - hosts: binome
   become: true
   roles:
-    - nodejs
+    - docker
     - codimd
   post_tasks:
     - debug:

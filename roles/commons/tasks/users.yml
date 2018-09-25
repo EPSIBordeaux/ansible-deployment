@@ -4,6 +4,8 @@
     name: binome
     state: present
 
+# TODO Their seems to have a bug here, it replay the instruction, but nothing have changed... ?
+
 - name: Create users
   user:
     name: "{{ item }}"
