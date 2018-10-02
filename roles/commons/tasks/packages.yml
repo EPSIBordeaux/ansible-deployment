@@ -31,4 +31,5 @@
     - cron
     - sendmail
     - curl
+    - mailutils
   notify: restart nginx
