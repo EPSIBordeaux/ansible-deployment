@@ -23,7 +23,13 @@
     owner: root
     group: root
     mode: 0644
-  vars:
-    receiver: "{{ fail2ban_receiver_mail }}"
-    sender: "{{ fail2ban_sender_email }}"
+  notify: restart fail2ban
+
+- name: Upload Fail2Ban Custom Action
+  template:
+    src: ../templates/sendEmail-whois-lines.conf.j2
+    dest: /etc/fail2ban/action.d/sendEmail-whois-lines.conf
+    owner: root
+    group: root
+    mode: 0600
   notify: restart fail2ban

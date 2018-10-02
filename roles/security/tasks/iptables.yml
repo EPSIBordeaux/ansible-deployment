@@ -202,6 +202,21 @@
     chain: INPUT
     jump: ACCEPT
 
+- name: Allow outgoing WHOIS traffic on port 43 TCP
+  iptables:
+    destination_port: 43
+    protocol: tcp
+    chain: OUTPUT
+    jump: ACCEPT
+
+- name: Allow incoming WHOIS traffic on port 43 TCP
+  iptables:
+    destination_port: 43
+    protocol: tcp
+    chain: INPUT
+    jump: ACCEPT
+
+
 - name: Set default Policy Rule to DROP on INPUT Chain
   iptables:
     chain: INPUT

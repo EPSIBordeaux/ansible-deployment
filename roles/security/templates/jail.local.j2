@@ -48,20 +48,14 @@ usedns = warn
 #   auto:   will use the system locale setting
 logencoding = auto
 
-# "enabled" enables the jails.
-#  By default all jails are disabled, and it should stay this way.
-#  Enable only relevant to your setup jails in your .local or jail.d/*.conf
-#
 # true:  jail will be enabled and log files will get monitored for changes
-# false: jail is not enabled
+# false: jail is not enabled by default
 enabled = false
-
 
 # "filter" defines the filter to use by the jail.
 #  By default jails have names matching their filter name
 #
 filter = %(__name__)s
-
 
 #
 # ACTIONS
@@ -69,15 +63,15 @@ filter = %(__name__)s
 
 # Destination email address used solely for the interpolations in
 # jail.{conf,local,d/*} configuration files.
-destemail = {{receiver}}
+destemail = {{ fail2ban.receiver }}
 
 # Sender email address used solely for some actions
-sender = {{sender}}
+sender = {{ fail2ban.smtp.user }}
 
 # E-mail action. Since 0.8.1 Fail2Ban uses sendmail MTA for the
 # mailing. Change mta configuration parameter to mail if you want to
 # revert to conventional 'mail'.
-mta = sendmail
+mta = sendEmail
 
 # Default protocol
 protocol = tcp
@@ -144,6 +138,7 @@ action_blocklist_de  = blocklist_de[email="%(sender)s", service=%(filter)s, apik
 # should be last action defined for a jail.
 #
 action_badips = badips.py[category="%(__name__)s", banaction="%(banaction)s", agent="%(fail2ban_agent)s"]
+
 #
 # Report ban via badips.com (uses action.d/badips.conf for reporting only)
 #
@@ -161,29 +156,13 @@ backend = %(sshd_backend)s
 enabled = true
 
 [sshd-ddos]
-# This jail corresponds to the standard configuration in Fail2ban.
-# The mail-whois action send a notification e-mail with a whois request
-# in the body.
 port    = ssh
 logpath = %(sshd_log)s
 backend = %(sshd_backend)s
 enabled = true
 
-[selinux-ssh]
-
-port     = ssh
-logpath  = %(auditd_log)s
-
 [nginx-http-auth]
 enabled = true
-port    = http,https
-logpath = %(nginx_error_log)s
-
-# To use 'nginx-limit-req' jail you should have `ngx_http_limit_req_module` 
-# and define `limit_req` and `limit_req_zone` as described in nginx documentation
-# http://nginx.org/en/docs/http/ngx_http_limit_req_module.html
-# or for example see in 'config/filter.d/nginx-limit-req.conf'
-[nginx-limit-req]
 port    = http,https
 logpath = %(nginx_error_log)s
 
@@ -194,34 +173,13 @@ logpath  = %(nginx_error_log)s
 maxretry = 2
 
 [proftpd]
-
 port     = ftp,ftp-data,ftps,ftps-data
 logpath  = %(proftpd_log)s
 backend  = %(proftpd_backend)s
 
 [vsftpd]
-# or overwrite it in jails.local to be
-# logpath = %(syslog_authpriv)s
-# if you want to rely on PAM failed login attempts
-# vsftpd's failregex should match both of those formats
 port     = ftp,ftp-data,ftps,ftps-data
 logpath  = %(vsftpd_log)s
-
-# To log wrong MySQL access attempts add to /etc/my.cnf in [mysqld] or
-# equivalent section:
-# log-warning = 2
-#
-# for syslog (daemon facility)
-# [mysqld_safe]
-# syslog
-#
-# for own logfile
-# [mysqld]
-# log-error=/var/log/mysqld.log
-[mysqld-auth]
-port     = 3306
-logpath  = %(mysql_log)s
-backend  = %(mysql_backend)s
 
 # Jail for more extended banning of persistent abusers
 # !!! WARNINGS !!!
@@ -235,4 +193,4 @@ enabled = true
 logpath  = /var/log/fail2ban.log
 banaction = %(banaction_allports)s
 bantime  = 604800  ; 1 week
-findtime = 86400   ; 1 day
+findtime = 608000   ; 1 week
