@@ -4,10 +4,9 @@
     name: binome
     state: present
 
-# TODO Their seems to have a bug here, it replay the instruction, but nothing have changed... ?
-
 - name: Create users
   user:
+    append: yes
     name: "{{ item }}"
     password: "{{ item | password_hash('sha512') }}"
     shell: /bin/bash
@@ -21,7 +20,7 @@
   shell: chage -d 0 {{ item }}
   when: user_creation.changed
   with_items:
-    - "{{ users }}"
+   - "{{ users }}"
 
 # We want to iterate over all defined SSH keys for each user
 # See https://stackoverflow.com/a/50711744/6187576
