@@ -6,6 +6,8 @@
 
 2. Copy `group_vars/all.example` as `group_vars/all` and edit it to fit your needs.
 
+3. Add your public keys in `keys` folder.
+
 ### Root Setup
 
 - Check Server fingerprint, accept it if it match and exit
