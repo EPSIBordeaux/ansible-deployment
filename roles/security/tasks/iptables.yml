@@ -118,13 +118,6 @@
     chain: INPUT
     jump: ACCEPT
 
-#- name: Allow incoming HTTPS traffic on port 8443 TCP
-#  iptables:
-#    destination_port: 8443
-#    protocol: tcp
-#    chain: INPUT
-#    jump: ACCEPT
-
 - name: Allow incoming SMTP traffic on port 25 TCP
   iptables:
     destination_port: 25

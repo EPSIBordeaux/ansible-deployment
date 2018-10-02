@@ -5,11 +5,12 @@ users:
     - USER_A
     - USER_B
 ssh_keys:
-    ocyhc:
-        - "PASTE_KEY"
-        - "PASTE_MORE_KEY"
-    oriamn:
-        - "PASTE_KEY"
+    USER_A:
+        - "{{ lookup('file', '../keys/1.pub') }}"
+        - "{{ lookup('file', '../keys/2.pub') }}"
+        - "{{ lookup('file', '../keys/3.pub') }}"
+    USER_B:
+        - "{{ lookup('file', '../keys/4.pub') }}"
 
 # Fail2Ban
 fail2ban_receiver_mail: EMAIL
