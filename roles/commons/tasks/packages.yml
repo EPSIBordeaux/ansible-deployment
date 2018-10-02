@@ -29,6 +29,6 @@
     - software-properties-common
     - gnupg2
     - cron
-    - sendmail
     - curl
+    - sendemail
   notify: restart nginx
