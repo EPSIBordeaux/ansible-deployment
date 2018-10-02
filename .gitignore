@@ -2,4 +2,6 @@
 inventory
 logs/
 group_vars/*
-!group_vars/*.example   
+!group_vars/*.example
+keys/*.pub
+!.gitkeep
