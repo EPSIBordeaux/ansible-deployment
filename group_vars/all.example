@@ -13,8 +13,14 @@ ssh_keys:
         - "{{ lookup('file', '../keys/4.pub') }}"
 
 # Fail2Ban
-fail2ban_receiver_mail: EMAIL
-fail2ban_sender_email: EMAIL
+fail2ban:
+    receiver: MAIL
+    smtp:
+        host: SMTP.URL
+        port: 587
+        user: MAIL
+        password: PASSWORD
+    servername: ServerName
 
 # Monit
 monit_smtp_url: SMTP

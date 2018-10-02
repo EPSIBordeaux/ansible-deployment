@@ -1,2 +1,9 @@
-fail2ban_receiver_mail: you@email.com
-fail2ban_sender_email: no-reply@email.com
+# Fail2Ban
+fail2ban:
+    receiver: MAIL
+    smtp:
+        host: SMTP.URL
+        port: 587
+        user: MAIL
+        password: PASSWORD
+    servername: ServerName
