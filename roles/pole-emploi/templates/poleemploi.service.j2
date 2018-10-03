@@ -6,13 +6,13 @@ ExecStart=/usr/bin/node /opt/pole-emploi/app/server.js
 # Required on some systems
 #WorkingDirectory=/opt/pole-emploi
 Restart=always
- # Restart service after 10 seconds if node service crashes
- RestartSec=10
- # Output to syslog
+# Restart service after 10 seconds if node service crashes
+RestartSec=10
+# Output to syslog
 StandardOutput=syslog
 StandardError=syslog
-SyslogIdentifier=nodejs-example
-User={{ nodejs_user }}
+SyslogIdentifier=pole-emploi
+User={{ node.user }}
 #Group=<alternate group>
 Environment=NODE_ENV=production PORT={{ pole_emploi_port }} PROCESS_NAME=pole-emploi
 

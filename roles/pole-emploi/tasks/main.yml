@@ -13,8 +13,8 @@
   file:
     path: /opt/pole-emploi
     state: directory
-    owner: "{{ nodejs_user }}" 
-    group: "{{ nodejs_user }}" 
+    owner: "{{ node.user }}" 
+    group: "{{ node.user }}" 
     mode: u=rwX,g=rX,o=rX
     recurse: yes
 
@@ -22,16 +22,16 @@
   template:
     src: app-config.js.j2
     dest: /opt/pole-emploi/app/config.js
-    owner: "{{ nodejs_user }}"
-    group: "{{ nodejs_user }}"
+    owner: "{{ node.user }}"
+    group: "{{ node.user }}"
     mode: 0644
 
 - name: Create configuration file for front-end
   template:
     src: pe-js-config.js.j2
     dest: /opt/pole-emploi/pe-js/config.js
-    owner: "{{ nodejs_user }}"
-    group: "{{ nodejs_user }}"
+    owner: "{{ node.user }}"
+    group: "{{ node.user }}"
     mode: 0644
 
 - name: Create service file 

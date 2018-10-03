@@ -9,8 +9,8 @@
   file:
     path: "{{ expert_system.path }}"
     state: directory
-    owner: "{{ nodejs_user }}" 
-    group: "{{ nodejs_user }}" 
+    owner: "{{ node.user }}" 
+    group: "{{ node.user }}" 
     mode: u=rwX,g=rX,o=rX
     recurse: yes
 

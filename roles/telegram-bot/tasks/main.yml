@@ -13,8 +13,8 @@
   file:
     path: "{{ telegram_bot.path }}"
     state: directory
-    owner: "{{ nodejs_user }}" 
-    group: "{{ nodejs_user }}" 
+    owner: "{{ node.user }}" 
+    group: "{{ node.user }}" 
     mode: u=rwX,g=rX,o=rX
     recurse: yes
 
@@ -22,8 +22,8 @@
   template:
     src: .env.j2
     dest: "{{ telegram_bot.path }}/.env"
-    owner: "{{ nodejs_user }}"
-    group: "{{ nodejs_user }}"
+    owner: "{{ node.user }}"
+    group: "{{ node.user }}"
     mode: 0644
 
 - name: Create service file 

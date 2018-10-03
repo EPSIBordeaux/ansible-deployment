@@ -57,9 +57,10 @@ pole_emploi_description: DESC
 pole_emploi_port: 3001
 
 # NodeJS
-nodejs_version: 10.x
-npm_config_prefix: "/usr/local/lib/npm"
-nodejs_user: some_user_that_will_be_node
+node:
+  version: 10.x
+  npm_prefix: "/usr/local/lib/npm"
+  user: node_user
 
 # Pong Server
 pong_server_domain: URL.COM
