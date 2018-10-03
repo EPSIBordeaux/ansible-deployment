@@ -9,3 +9,8 @@
     regexp: "^{{ default_ip }}" 
     line: "{{ default_ip }}    {{ fqdn }}    {{ hostname }}" 
     state: present
+
+- name: Setup custom motd
+  copy:
+    src: ../files/custom_motd
+    dest: /etc/motd

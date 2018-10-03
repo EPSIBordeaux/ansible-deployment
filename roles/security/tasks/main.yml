@@ -52,8 +52,3 @@
 - include: fail2ban.yml
 
 - include: iptables.yml
-
-- name: Setup custom motd
-  copy:
-    src: ../files/custom_motd
-    dest: /etc/motd
