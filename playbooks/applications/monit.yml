@@ -6,4 +6,4 @@
     - monit
   post_tasks:
     - debug:
-        msg: "Monit is now configured and available at https://{{ monit_status_domain }}/ !"
+        msg: "Monit is now configured and available at https://{{ monit.domain }}/ !"

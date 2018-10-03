@@ -38,13 +38,15 @@ fail2ban:
     servername: ServerName
 
 # Monit
-monit_smtp_url: SMTP
-monit_smtp_port: PORT
-monit_smtp_password: XXX
-monit_smtp_user: EMAIL
-monit_smtp_recipient: EMAIL
-monit_httpd_password: XXX
-monit_status_domain: EMAIL
+monit:
+  domain: status.epsi-bordeaux.fr
+  recipient: contact@epsi-bordeaux.fr
+  web_password: <password>
+  smtp:
+    host: mail.gandi.net
+    port: 587
+    user: no-reply@epsi-bordeaux.fr
+    password: <password>
 
 # Let's encrypt
 letsencrypt_email: EMAIL

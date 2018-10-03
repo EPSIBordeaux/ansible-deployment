@@ -1,7 +1,9 @@
-monit_smtp_url: SMTP_URL
-monit_smtp_port: SMTP_PORT
-monit_smtp_password: secure-password
-monit_smtp_user: sender@email.com
-monit_smtp_recipient: recipient@email.com
-monit_httpd_password: web_interface_password
-monit_status_domain: status.epsi-bordeaux.fr
+monit:
+  domain: status.epsi-bordeaux.fr
+  recipient: contact@epsi-bordeaux.fr
+  web_password: <password>
+  smtp:
+    host: mail.gandi.net
+    port: 587
+    user: no-reply@epsi-bordeaux.fr
+    password: <password>

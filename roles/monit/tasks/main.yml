@@ -1,32 +1,44 @@
 ---
-- name: Install Monit
+- name: Ensure monit is installed
   apt:
     name: monit
     state: present
     force_apt_get: True
 
-- include: configuration.yml
+# The trailing slash indicates that we don't want to upload the folder but only its content
+- name: Upload Monit configuration
+  copy:
+    src: ../resources/monit/
+    dest: /etc/monit
+  notify: restart monit
+
+- name: Copy Monit main configuration
+  template:
+    src: ../templates/monitrc.j2
+    dest: /etc/monit/monitrc
+    owner: root
+    group: root
+    mode: 0600
+  notify: restart monit
 
 - include_role:
     name: certbot_challenge
   vars:
-    certbot_domain: "{{ monit_status_domain }}"
+    certbot_domain: "{{ monit.domain }}"
 
 - name: Create monit vhost sites-available
   template:
     src: ../templates/monit.j2
-    dest: "/etc/nginx/sites-available/{{monit_status_domain}}.conf"
+    dest: "/etc/nginx/sites-available/{{ monit.domain }}.conf"
     owner: root
     group: root
     mode: 0600
-  vars:
-    domain: "{{ monit_status_domain }}"
   notify: 'restart nginx'
 
 - name: Enable monit site
   file: 
-    src: "/etc/nginx/sites-available/{{monit_status_domain}}.conf"
-    dest: "/etc/nginx/sites-enabled/{{monit_status_domain}}.conf"
+    src: "/etc/nginx/sites-available/{{ monit.domain }}.conf"
+    dest: "/etc/nginx/sites-enabled/{{ monit.domain }}.conf"
     state: link
   notify: 'restart nginx'
 
