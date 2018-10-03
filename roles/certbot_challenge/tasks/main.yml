@@ -1,6 +1,6 @@
 ---
 
-- name: Check if a certificate already exists
+- name: "Check if a certificate already exists for {{ certbot_domain }}"
   stat: 
     path: "/etc/letsencrypt/live/{{ certbot_domain }}"
   register: certbot_certificate
@@ -33,7 +33,7 @@
 # We need to reload nginx before getting Let's encrypt certificate
 - meta: flush_handlers
 
-- name: Create Let's Encrypt certificate
+- name: "Create Let's Encrypt certificate for {{ certbot_domain }}"
   shell: "certbot certonly --rsa-key-size 4096 --webroot -w /var/www/acme-challenges/ -m {{ letsencrypt_email }} --agree-tos -d {{ certbot_domain }} --non-interactive"
   args:
     creates: "/etc/letsencrypt/live/{{ certbot_domain }}"

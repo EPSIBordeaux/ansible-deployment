@@ -3,23 +3,21 @@
 - include_role:
     name: certbot_challenge
   vars:
-    certbot_domain: "{{ codimd_domain }}"
+    certbot_domain: "{{ codimd.domain }}"
 
 - name: Create CodiMD vhost sites-available
   template:
     src: ../templates/codimd.conf.j2
-    dest: "/etc/nginx/sites-available/{{codimd_domain}}.conf"
+    dest: "/etc/nginx/sites-available/{{ codimd.domain }}.conf"
     owner: root
     group: root
     mode: 0600
-  vars:
-    domain: "{{ codimd_domain }}"
   notify: 'restart nginx'
 
 - name: Enable CodiMD site
   file: 
-    src: "/etc/nginx/sites-available/{{codimd_domain}}.conf"
-    dest: "/etc/nginx/sites-enabled/{{codimd_domain}}.conf"
+    src: "/etc/nginx/sites-available/{{ codimd.domain }}.conf"
+    dest: "/etc/nginx/sites-enabled/{{ codimd.domain }}.conf"
     state: link
   notify: 'restart nginx'
 

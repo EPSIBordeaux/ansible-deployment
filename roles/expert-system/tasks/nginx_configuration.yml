@@ -3,23 +3,23 @@
 - include_role:
     name: certbot_challenge
   vars:
-    certbot_domain: "{{ expert_system_domain }}"
+    certbot_domain: "{{ expert_system.domain }}"
 
 - name: Create expert system vhost sites-available
   template:
     src: ../templates/expert-system.conf.j2
-    dest: "/etc/nginx/sites-available/{{expert_system_domain}}.conf"
+    dest: "/etc/nginx/sites-available/{{ expert_system.domain }}.conf"
     owner: root
     group: root
     mode: 0600
   vars:
-    domain: "{{ expert_system_domain }}"
+    domain: "{{ expert_system.domain }}"
   notify: 'restart nginx'
 
 - name: Enable expert system site
   file: 
-    src: "/etc/nginx/sites-available/{{expert_system_domain}}.conf"
-    dest: "/etc/nginx/sites-enabled/{{expert_system_domain}}.conf"
+    src: "/etc/nginx/sites-available/{{ expert_system.domain }}.conf"
+    dest: "/etc/nginx/sites-enabled/{{ expert_system.domain }}.conf"
     state: link
   notify: 'restart nginx'
 

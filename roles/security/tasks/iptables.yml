@@ -216,7 +216,6 @@
     chain: INPUT
     jump: ACCEPT
 
-
 - name: Set default Policy Rule to DROP on INPUT Chain
   iptables:
     chain: INPUT

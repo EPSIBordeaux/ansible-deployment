@@ -8,14 +8,14 @@ map $sent_http_content_type $expires {
 
 server {
 	include includes/listen-https;
-	server_name {{ domain }};
+	server_name {{ monit.domain }};
 	index index.html index.php;
 
 	include includes/acme-challenge;
 	include includes/common;
 	
-	access_log  /var/log/nginx/{{ domain }}.access.log;
-	error_log   /var/log/nginx/{{ domain }}.error.log;
+	access_log  /var/log/nginx/{{ monit.domain }}.access.log;
+	error_log   /var/log/nginx/{{ monit.domain }}.error.log;
 
 	expires $expires;
 
@@ -28,17 +28,17 @@ server {
 	include includes/ssl-stapling;
 	include includes/ssl-hsts;
 
-	ssl_certificate         /etc/letsencrypt/live/{{ domain }}/fullchain.pem;
-	ssl_certificate_key     /etc/letsencrypt/live/{{ domain }}/privkey.pem;
-	ssl_trusted_certificate /etc/letsencrypt/live/{{ domain }}/chain.pem;
+	ssl_certificate         /etc/letsencrypt/live/{{ monit.domain }}/fullchain.pem;
+	ssl_certificate_key     /etc/letsencrypt/live/{{ monit.domain }}/privkey.pem;
+	ssl_trusted_certificate /etc/letsencrypt/live/{{ monit.domain }}/chain.pem;
 }
 
 server {
 	include includes/listen-http;
 	include includes/acme-challenge;
 	include includes/common;
-	server_name {{ domain }};
-	access_log /var/log/nginx/{{ domain }}.access.log;
-	error_log /var/log/nginx/{{ domain }}.error.log;
+	server_name {{ monit.domain }};
+	access_log /var/log/nginx/{{ monit.domain }}.access.log;
+	error_log /var/log/nginx/{{ monit.domain }}.error.log;
 	return 301 https://$host$request_uri;
 }

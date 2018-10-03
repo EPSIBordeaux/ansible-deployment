@@ -1,38 +1,23 @@
 ---
 
-# Users
+# COMMONS #
 users:
-    - USER_A
-    - USER_B
+    - ocyhc
+    - oriamn
 ssh_keys:
-    USER_A:
-        - "{{ lookup('file', '../keys/1.pub') }}"
-        - "{{ lookup('file', '../keys/2.pub') }}"
-        - "{{ lookup('file', '../keys/3.pub') }}"
-    USER_B:
-        - "{{ lookup('file', '../keys/4.pub') }}"
+    ocyhc:
+        - "{{ lookup('file', '../keys/A.pub') }}"
+        - "{{ lookup('file', '../keys/B.pub') }}"
+        - "{{ lookup('file', '../keys/C.pub') }}"
+    oriamn:
+        - "{{ lookup('file', '../keys/D.pub') }}"
 
-# Fail2Ban
-fail2ban:
-    receiver: MAIL
-    smtp:
-        host: SMTP.URL
-        port: 587
-        user: MAIL
-        password: PASSWORD
-    servername: ServerName
+custom_bin:
+    path: /opt/custom_bin
 
-# Monit
-monit_smtp_url: SMTP
-monit_smtp_port: PORT
-monit_smtp_password: XXX
-monit_smtp_user: EMAIL
-monit_smtp_recipient: EMAIL
-monit_httpd_password: XXX
-monit_status_domain: EMAIL
-
-# Let's encrypt
-letsencrypt_email: EMAIL
+default_ip: <ip>
+fqdn: <domain>
+hostname: <domain>
 
 # Locales
 locales: 
@@ -40,61 +25,92 @@ locales:
     - en_US.UTF-8
 default_locale: fr_FR.UTF-8
 timezone: Europe/Paris
+# END COMMONS #
 
-# Hostname
-default_ip: IP
-fqdn: URL
-hostname: URL
+# Fail2Ban
+fail2ban:
+    receiver: contact@<domain>
+    smtp:
+        host: mail.gandi.net
+        port: 587
+        user: no-reply@<domain>
+        password: <password>
+    servername: EPSI_Bordeaux_Binome
+
+# Monit
+monit:
+  domain: status.<domain>
+  recipient: contact@<domain>
+  web_password: <password>
+  smtp:
+    host: mail.gandi.net
+    port: 587
+    user: no-reply@<domain>
+    password: <password>
+
+# Let's encrypt
+letsencrypt_email: contact@<domain>
 
 # Pole Emploi
-pole_emploi_domain: DOMAIN.URL
-pole_emploi_description: DESC
-pole_emploi_port: 3001
+pole_emploi:
+  path: /opt/pole-emploi
+  domain: pole-emploi.<domain>
+  port: 3001
+  description: Pole Emploi Detect when user is lost or angry application
 
 # NodeJS
-nodejs_version: 10.x
-npm_config_prefix: "/usr/local/lib/npm"
-nodejs_user: some_user_that_will_be_node
+node:
+  version: 10.x
+  npm_prefix: "/usr/local/lib/npm"
+  user: node_user
 
 # Pong Server
-pong_server_domain: URL.COM
+pong:
+  domain: api.pong.<domain>
 
 # Expert System
-expert_system_domain: URL.Com
-expert_system_description: DESC
-expert_system_port: 3002
+expert_system:
+  path: /opt/expert-system
+  domain: expert-system.<domain>
+  description: Expert System
+  port: 3002
 
 # Machine Learning
-machine_learning_domain: DOMAIN.FR
+machine_learning:
+    domain: machine-learning.<domain>
 
 # Codi MD
-codimd_domain: DOMAIN.FR
-codimd_port: 3003
+codimd:
+    domain: md.<domain>
+    port: 3000
+    path: /opt/codimd
 
 # Docker
-docker_users: 
+docker:
+  edition: "ce"
+  version: "latest"
+  compose:
+    install: True
+    version: "1.22.0"
+  users: 
     - oriamn
     - ocyhc
-docker_edition: "ce"
-docker_channel: "stable"
-docker_version: "latest"
-docker_install_docker_compose: True
-docker_compose_version: "1.22.0"
-docker_apt_key_id: "9DC858229FC7DD38854AE2D88D81803C0EBFCD88"
-docker_apt_key_server: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
-docker_apt_repository: "deb [arch=amd64] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} {{ docker_channel }}"
-docker_apt_cache_time: 86400
+  apt:
+    key_id: "9DC858229FC7DD38854AE2D88D81803C0EBFCD88"
+    key_server: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
+    repository: "deb [arch=amd64] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+    cache_time: 86400
 
 # Telegram Bot
 telegram_bot:
-  token: <string>
+  token: <token>
   path: /opt/telegram_bot
-  port: <int>
-  domain: <url>
-  description: <string>
+  port: 3004
+  domain: telegram-bot.<domain>
+  description: Un bot Telegram de recrutement
   smtp:
-    user: <email>
+    user: no-reply@<domain>
     password: <password>
-    host: <url>
-    port: <int>
-    secure: <boolean>
+    host: mail.gandi.net
+    port: 587
+    secure: true

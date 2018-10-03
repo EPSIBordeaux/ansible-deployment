@@ -7,4 +7,4 @@
     - machine-learning
   post_tasks:
     - debug:
-        msg: "Machine Learning is now configured and available at https://{{ machine_learning_domain }}/ !"
+        msg: "Machine Learning is now configured and available at https://{{ machine_learning.domain }}/ !"

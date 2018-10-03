@@ -3,11 +3,11 @@
 - name: Clone Pong Server repository
   git:
     repo: 'https://github.com/EPSIBordeaux/temps-reel-server.git'
-    dest: "/var/www/{{ pong_server_domain}}"
+    dest: "/var/www/{{ pong.domain }}"
 
 - name: Set permissions on Pong Server Repository
   file:
-    path: "/var/www/{{ pong_server_domain }}"
+    path: "/var/www/{{ pong.domain }}"
     state: directory
     owner: "www-data" 
     group: "www-data" 
@@ -17,23 +17,23 @@
 - include_role:
     name: certbot_challenge
   vars:
-    certbot_domain: "{{ pong_server_domain }}"
+    certbot_domain: "{{ pong.domain }}"
 
 - name: Create pong server vhost sites-available
   template:
     src: ../templates/pong.conf.j2
-    dest: "/etc/nginx/sites-available/{{pong_server_domain}}.conf"
+    dest: "/etc/nginx/sites-available/{{ pong.domain }}.conf"
     owner: root
     group: root
     mode: 0600
   vars:
-    domain: "{{ pong_server_domain }}"
+    domain: "{{ pong.domain }}"
   notify: 'restart nginx'
 
 - name: Enable pong server site
   file: 
-    src: "/etc/nginx/sites-available/{{pong_server_domain}}.conf"
-    dest: "/etc/nginx/sites-enabled/{{pong_server_domain}}.conf"
+    src: "/etc/nginx/sites-available/{{ pong.domain }}.conf"
+    dest: "/etc/nginx/sites-enabled/{{ pong.domain }}.conf"
     state: link
   notify: 'restart nginx'
 

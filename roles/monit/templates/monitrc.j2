@@ -58,8 +58,8 @@ set statefile /var/lib/monit/state
 # will use the second mail server in the list and so on. By default Monit uses
 # port 25 - it is possible to override this with the PORT option.
 #
-set mailserver {{ url }} port {{ port }}
-username "{{ user }}" password "{{ user_password }}"
+set mailserver {{ monit.smtp.host }} port {{ monit.smtp.port }}
+username "{{ monit.smtp.user }}" password "{{ monit.smtp.password }}"
 using tlsv1 
 with timeout 30 seconds
                # primary mailserver
@@ -91,7 +91,7 @@ with timeout 30 seconds
 ## service defined in this file has errors. Alerts may be restricted on
 ## events by using a filter as in the second example below.
 #
-set alert {{ recipient }}                       # receive all alerts
+set alert {{ monit.recipient }}                       # receive all alerts
 #
 ## Do not alert when Monit starts, stops or performs a user initiated action.
 ## This filter is recommended to avoid getting alerts for trivial cases.
@@ -110,7 +110,7 @@ set alert {{ recipient }}                       # receive all alerts
 set httpd port 2812 and
     use address 127.0.0.1  # only accept connection from localhost
     allow localhost        # allow localhost to connect to the server and
-    allow admin:"{{ web_password }}"      # require user 'admin' with password 'monit'
+    allow admin:"{{ monit.web_password }}"      # require user 'admin' with password 'monit'
 #
 ###############################################################################
 ## Includes

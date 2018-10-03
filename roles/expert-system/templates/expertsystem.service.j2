@@ -1,20 +1,20 @@
 [Unit]
-Description={{ expert_system_description }}
+Description={{ expert_system.description }}
 
 [Service]
-ExecStart=/usr/bin/node /opt/expert-system/app/index.js
+ExecStart=/usr/bin/node {{ expert_system.path }}/app/index.js
 # Required on some systems
-#WorkingDirectory=/opt/expert-system
+#WorkingDirectory={{ expert_system.path }}
 Restart=always
- # Restart service after 10 seconds if node service crashes
- RestartSec=10
- # Output to syslog
+# Restart service after 10 seconds if node service crashes
+RestartSec=10
+# Output to syslog
 StandardOutput=syslog
 StandardError=syslog
-SyslogIdentifier=nodejs-example
-User={{ nodejs_user }}
+SyslogIdentifier=expert_system
+User={{ node.user }}
 #Group=<alternate group>
-Environment=NODE_ENV=production PORT={{ expert_system_port }} PROCESS_NAME=expert-system
+Environment=NODE_ENV=production PORT={{ expert_system.port }}
 
 [Install]
 WantedBy=multi-user.target

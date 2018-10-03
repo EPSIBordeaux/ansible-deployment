@@ -2,25 +2,25 @@
 
 - name: Add Docker GPG key
   apt_key:
-    id: "{{ docker_apt_key_id }}"
-    url: "{{ docker_apt_key_server }}"
+    id: "{{ docker.apt.key_id }}"
+    url: "{{ docker.apt.key_server }}"
 
 - name: Configure Docker APT repository
   apt_repository:
-    repo: "{{ docker_apt_repository }}"
+    repo: "{{ docker.apt.repository }}"
 
 - name: Install Docker
   apt:
-    name: "docker-{{ docker_edition }}"
+    name: "docker-{{ docker.edition }}"
     update_cache: True
-    cache_valid_time: "{{ docker_apt_cache_time }}"
+    cache_valid_time: "{{ docker.apt.cache_time }}"
     state: "latest"
 
 - name: Install Python for managing Docker login credentials
   apt:
     name: "{{ item }}"
     update_cache: True
-    cache_valid_time: "{{ docker_apt_cache_time }}"
+    cache_valid_time: "{{ docker.apt.cache_time }}"
   with_items:
     - "python-pip"
     - "python"
@@ -30,9 +30,7 @@
     name: "{{ item }}"
   with_items:
     - docker-compose
-    #- docker-py
     - docker
-    # - setuptools
 
 # See https://github.com/ansible/ansible/issues/37200#issuecomment-381158216
 - name: Install Pip Requests for PIP
@@ -45,15 +43,15 @@
     name: "{{ item }}"
     groups: "docker"
     append: True
-  loop: "{{ docker_users }}"
-  when: docker_users
+  loop: "{{ docker.users }}"
+  when: docker.users
 
 - name: Install Docker Compose
   get_url:
-    url: "https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64"
+    url: "https://github.com/docker/compose/releases/download/{{ docker.compose.version }}/docker-compose-Linux-x86_64"
     dest: "/usr/local/bin/docker-compose"
     force: True
     owner: "root"
     group: "root"
     mode: "0755"
-  when: docker_install_docker_compose
+  when: docker.compose.install

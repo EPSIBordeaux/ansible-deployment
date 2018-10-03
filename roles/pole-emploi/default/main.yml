@@ -1,3 +1,5 @@
-pole_emploi_domain: SOME_WHERE.fr
-pole_emploi_description: DESC
-pole_emploi_port: 3001
+pole_emploi:
+  path: /opt/pole-emploi
+  domain: <url>
+  port: <int>
+  description: Pole Emploi Detect when user is lost or angry application

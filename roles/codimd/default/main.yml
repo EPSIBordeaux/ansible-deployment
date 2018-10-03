@@ -1,2 +1,4 @@
-codimd_domain: SOME_WHERE.fr
-codimd_port: 3003
+codimd:
+    domain: <url>
+    port: <int>
+    path: <absolute-path>

@@ -3,20 +3,20 @@
 - name: Clone Expert System repository
   git:
     repo: 'https://github.com/EPSIBordeaux/epsi-expert-system.git'
-    dest: /opt/expert-system
+    dest: "{{ expert_system.path }}"
 
 - name: Set permissions on Expert System Repository
   file:
-    path: /opt/expert-system
+    path: "{{ expert_system.path }}"
     state: directory
-    owner: "{{ nodejs_user }}" 
-    group: "{{ nodejs_user }}" 
+    owner: "{{ node.user }}" 
+    group: "{{ node.user }}" 
     mode: u=rwX,g=rX,o=rX
     recurse: yes
 
 - name: Install dependencies
   npm:
-    path: /opt/expert-system
+    path: "{{ expert_system.path }}"
 
 - name: Create service file 
   template:

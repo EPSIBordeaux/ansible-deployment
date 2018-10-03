@@ -7,13 +7,13 @@ map $http_user_agent $log_ua {
 
 upstream codimd {
     ip_hash;
-    server 127.0.0.1:{{ codimd_port }};
+    server 127.0.0.1:{{ codimd.port }};
 }
 
 server {
 	include includes/listen-https;
-	server_name {{ codimd_domain }};
-	root /opt/pole-emploi/;
+	server_name {{ codimd.domain }};
+	root {{ codimd.path }};
 	index index.html;
 
 	add_header Content-Security-Policy "frame-ancestors 'none'; object-src 'none'";
@@ -25,8 +25,8 @@ server {
 	include includes/acme-challenge;
 	include includes/common;
 
-	access_log /var/log/nginx/{{ codimd_domain }}.access.log combined if=$log_ua;
-	error_log /var/log/nginx/{{ codimd_domain }}.error.log;
+	access_log /var/log/nginx/{{ codimd.domain }}.access.log combined if=$log_ua;
+	error_log /var/log/nginx/{{ codimd.domain }}.error.log;
 
     location / {
         proxy_set_header X-Real-IP $remote_addr;
@@ -46,15 +46,15 @@ server {
 	include includes/ssl-stapling;
 	include includes/ssl-hsts;
 
-	ssl_certificate         /etc/letsencrypt/live/{{ codimd_domain }}/fullchain.pem;
-	ssl_certificate_key     /etc/letsencrypt/live/{{ codimd_domain }}/privkey.pem;
-	ssl_trusted_certificate /etc/letsencrypt/live/{{ codimd_domain }}/chain.pem;
+	ssl_certificate         /etc/letsencrypt/live/{{ codimd.domain }}/fullchain.pem;
+	ssl_certificate_key     /etc/letsencrypt/live/{{ codimd.domain }}/privkey.pem;
+	ssl_trusted_certificate /etc/letsencrypt/live/{{ codimd.domain }}/chain.pem;
 }
 
 server {
 	include includes/listen-http;
 	include includes/acme-challenge;
 	include includes/common;
-	server_name {{ codimd_domain }};
+	server_name {{ codimd.domain }};
 	return 301 https://$host$request_uri;
 }

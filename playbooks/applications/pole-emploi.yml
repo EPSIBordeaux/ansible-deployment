@@ -7,4 +7,4 @@
     - pole-emploi
   post_tasks:
     - debug:
-        msg: "Pôle Emploi is now configured and available at https://{{ pole_emploi_domain }}/ and https://{{ pole_emploi_domain }}/notifications.html !"
+        msg: "Pôle Emploi is now configured and available at https://{{ pole_emploi.domain }}/ and https://{{ pole_emploi.domain }}/notifications.html !"

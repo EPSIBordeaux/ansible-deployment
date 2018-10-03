@@ -3,23 +3,23 @@
 - include_role:
     name: certbot_challenge
   vars:
-    certbot_domain: "{{ pole_emploi_domain }}"
+    certbot_domain: "{{ pole_emploi.domain }}"
 
 - name: Create pole emploi vhost sites-available
   template:
     src: ../templates/pole-emploi.conf.j2
-    dest: "/etc/nginx/sites-available/{{pole_emploi_domain}}.conf"
+    dest: "/etc/nginx/sites-available/{{pole_emploi.domain}}.conf"
     owner: root
     group: root
     mode: 0600
   vars:
-    domain: "{{ pole_emploi_domain }}"
+    domain: "{{ pole_emploi.domain }}"
   notify: 'restart nginx'
 
 - name: Enable pole emploi site
   file: 
-    src: "/etc/nginx/sites-available/{{pole_emploi_domain}}.conf"
-    dest: "/etc/nginx/sites-enabled/{{pole_emploi_domain}}.conf"
+    src: "/etc/nginx/sites-available/{{pole_emploi.domain}}.conf"
+    dest: "/etc/nginx/sites-enabled/{{pole_emploi.domain}}.conf"
     state: link
   notify: 'restart nginx'
 

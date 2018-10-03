@@ -1,11 +1,23 @@
 users:
-  - test
-  - test2
-
+    - USER_A
+    - USER_B
 ssh_keys:
-  test:
-    - "YOUR_SSH_KEY_HERE"
-  test2:
-    - "YOUR_SSH_KEY_HERE"
-    - "ANOTHER_ONE"
+    USER_A:
+        - "{{ lookup('file', '../keys/1.pub') }}"
+        - "{{ lookup('file', '../keys/2.pub') }}"
+        - "{{ lookup('file', '../keys/3.pub') }}"
+    USER_B:
+        - "{{ lookup('file', '../keys/4.pub') }}"
+custom_bin:
+    path: /opt/custom_bin
 
+default_ip: 51.38.231.171
+fqdn: epsi-bordeaux.fr
+hostname: epsi-bordeaux.fr
+
+# Locales
+locales: 
+    - fr_FR.UTF-8
+    - en_US.UTF-8
+default_locale: fr_FR.UTF-8
+timezone: Europe/Paris
