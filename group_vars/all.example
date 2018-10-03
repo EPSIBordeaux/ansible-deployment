@@ -2,22 +2,22 @@
 
 # COMMONS #
 users:
-    - USER_A
-    - USER_B
+    - ocyhc
+    - oriamn
 ssh_keys:
-    USER_A:
-        - "{{ lookup('file', '../keys/1.pub') }}"
-        - "{{ lookup('file', '../keys/2.pub') }}"
-        - "{{ lookup('file', '../keys/3.pub') }}"
-    USER_B:
-        - "{{ lookup('file', '../keys/4.pub') }}"
+    ocyhc:
+        - "{{ lookup('file', '../keys/A.pub') }}"
+        - "{{ lookup('file', '../keys/B.pub') }}"
+        - "{{ lookup('file', '../keys/C.pub') }}"
+    oriamn:
+        - "{{ lookup('file', '../keys/D.pub') }}"
 
 custom_bin:
     path: /opt/custom_bin
 
 default_ip: <ip>
-fqdn: <url>
-hostname: <url>
+fqdn: <domain>
+hostname: <domain>
 
 # Locales
 locales: 
@@ -29,32 +29,32 @@ timezone: Europe/Paris
 
 # Fail2Ban
 fail2ban:
-    receiver: MAIL
+    receiver: contact@<domain>
     smtp:
-        host: SMTP.URL
+        host: mail.gandi.net
         port: 587
-        user: MAIL
-        password: PASSWORD
-    servername: ServerName
+        user: no-reply@<domain>
+        password: <password>
+    servername: EPSI_Bordeaux_Binome
 
 # Monit
 monit:
-  domain: status.epsi-bordeaux.fr
-  recipient: contact@epsi-bordeaux.fr
+  domain: status.<domain>
+  recipient: contact@<domain>
   web_password: <password>
   smtp:
     host: mail.gandi.net
     port: 587
-    user: no-reply@epsi-bordeaux.fr
+    user: no-reply@<domain>
     password: <password>
 
 # Let's encrypt
-letsencrypt_email: EMAIL
+letsencrypt_email: contact@<domain>
 
 # Pole Emploi
 pole_emploi:
   path: /opt/pole-emploi
-  domain: pole-emploi.epsi-bordeaux.fr
+  domain: pole-emploi.<domain>
   port: 3001
   description: Pole Emploi Detect when user is lost or angry application
 
@@ -66,24 +66,24 @@ node:
 
 # Pong Server
 pong:
-  domain: api.pong.epsi-bordeaux.fr
+  domain: api.pong.<domain>
 
 # Expert System
 expert_system:
-  path: <absolute-path>
-  domain: <url>
-  description: <string>
-  port: <int>
+  path: /opt/expert-system
+  domain: expert-system.<domain>
+  description: Expert System
+  port: 3002
 
 # Machine Learning
 machine_learning:
-    domain: <url>
+    domain: machine-learning.<domain>
 
 # Codi MD
 codimd:
-    domain: <url>
-    port: <int>
-    path: <absolute-path>
+    domain: md.<domain>
+    port: 3000
+    path: /opt/codimd
 
 # Docker
 docker:
@@ -92,7 +92,9 @@ docker:
   compose:
     install: True
     version: "1.22.0"
-  users: []
+  users: 
+    - oriamn
+    - ocyhc
   apt:
     key_id: "9DC858229FC7DD38854AE2D88D81803C0EBFCD88"
     key_server: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
@@ -101,14 +103,14 @@ docker:
 
 # Telegram Bot
 telegram_bot:
-  token: <string>
+  token: <token>
   path: /opt/telegram_bot
-  port: <int>
-  domain: <url>
-  description: <string>
+  port: 3004
+  domain: telegram-bot.<domain>
+  description: Un bot Telegram de recrutement
   smtp:
-    user: <email>
+    user: no-reply@<domain>
     password: <password>
-    host: <url>
-    port: <int>
-    secure: <boolean>
+    host: mail.gandi.net
+    port: 587
+    secure: true
