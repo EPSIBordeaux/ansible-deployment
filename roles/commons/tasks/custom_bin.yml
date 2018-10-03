@@ -3,13 +3,13 @@
 - name: Clone Custom Bin Repository
   git:
     repo: 'https://github.com/sylvainmetayer/bin.git'
-    dest: /opt/custom_bin
+    dest: "{{ custom_bin.path }}"
 
 # Only simple word, without "." or whathever and exclude "LICENSE" file. 
 # This way, we match all scripts
 - name: Find all managed scripts
   find:
-    paths: /opt/custom_bin/
+    paths: "{{ custom_bin.path }}"
     patterns: '^[^LICENSE|\.]\w+$'
     use_regex: yes
   register: custom_bin_files
@@ -27,6 +27,6 @@
   lineinfile:
     dest: "/home/{{ item }}/.profile"
     state: present
-    line: 'PATH=$PATH:/opt/custom_bin'
+    line: 'PATH=$PATH:{{ custom_bin.path }}'
   with_items: 
     - "{{ users }}"
