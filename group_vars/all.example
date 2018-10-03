@@ -68,8 +68,10 @@ expert_system_port: 3002
 machine_learning_domain: DOMAIN.FR
 
 # Codi MD
-codimd_domain: DOMAIN.FR
-codimd_port: 3003
+codimd:
+    domain: <url>
+    port: <int>
+    path: <absolute-path>
 
 # Docker
 docker_users: 

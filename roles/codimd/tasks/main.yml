@@ -1,20 +1,13 @@
 ---
 
-- name: "Clone CodiMD Docker repository"
+- name: Clone CodiMD Docker repository
   git:
     repo: 'https://github.com/hackmdio/codimd-container.git'
-    dest: /opt/codimd
+    dest: "{{ codimd.path }}"
 
-- name: Start CodiMD Docker Containers
+- name: Start CodiMD Docker Container
   docker_service:
     state: present
-    project_src: /opt/codimd
-
-# - name: "Create user {{ item }}"
-#  command: "bin/manage_users --pass {{ item }} --add {{ item }}"
-#  args: 
-#      chdir: /opt/codimd
-#  with_items: "{{ codimd_users }}"
-#  when: codimd_assets.changed
+    project_src: "{{ codimd.path }}"
 
 - include: nginx_configuration.yml
