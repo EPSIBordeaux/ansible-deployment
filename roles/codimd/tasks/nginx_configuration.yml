@@ -12,8 +12,6 @@
     owner: root
     group: root
     mode: 0600
-  vars:
-    domain: "{{ codimd_domain }}"
   notify: 'restart nginx'
 
 - name: Enable CodiMD site

@@ -1,6 +1,6 @@
 ---
 
-# Users
+# COMMONS #
 users:
     - USER_A
     - USER_B
@@ -11,6 +11,21 @@ ssh_keys:
         - "{{ lookup('file', '../keys/3.pub') }}"
     USER_B:
         - "{{ lookup('file', '../keys/4.pub') }}"
+
+custom_bin:
+    path: /opt/custom_bin
+
+default_ip: <ip>
+fqdn: <url>
+hostname: <url>
+
+# Locales
+locales: 
+    - fr_FR.UTF-8
+    - en_US.UTF-8
+default_locale: fr_FR.UTF-8
+timezone: Europe/Paris
+# END COMMONS #
 
 # Fail2Ban
 fail2ban:
@@ -34,18 +49,6 @@ monit_status_domain: EMAIL
 # Let's encrypt
 letsencrypt_email: EMAIL
 
-# Locales
-locales: 
-    - fr_FR.UTF-8
-    - en_US.UTF-8
-default_locale: fr_FR.UTF-8
-timezone: Europe/Paris
-
-# Hostname
-default_ip: IP
-fqdn: URL
-hostname: URL
-
 # Pole Emploi
 pole_emploi_domain: DOMAIN.URL
 pole_emploi_description: DESC
@@ -60,9 +63,11 @@ nodejs_user: some_user_that_will_be_node
 pong_server_domain: URL.COM
 
 # Expert System
-expert_system_domain: URL.Com
-expert_system_description: DESC
-expert_system_port: 3002
+expert_system:
+  path: <absolute-path>
+  domain: <url>
+  description: <string>
+  port: <int>
 
 # Machine Learning
 machine_learning_domain: DOMAIN.FR
@@ -76,7 +81,6 @@ codimd:
 # Docker
 docker:
   edition: "ce"
-  channel: "stable"
   version: "latest"
   compose:
     install: True
@@ -85,7 +89,7 @@ docker:
   apt:
     key_id: "9DC858229FC7DD38854AE2D88D81803C0EBFCD88"
     key_server: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
-    repository: "deb [arch=amd64] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} {{ docker_channel }}"
+    repository: "deb [arch=amd64] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
     cache_time: 86400
 
 # Telegram Bot

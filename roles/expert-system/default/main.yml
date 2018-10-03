@@ -1,3 +1,5 @@
-expert_system_domain: SOME_WHERE.fr
-expert_system_description: DESC
-expert_system_port: 3002
+expert_system:
+  path: /opt/expert-system
+  domain: <url>
+  description: <string>
+  port: <int>

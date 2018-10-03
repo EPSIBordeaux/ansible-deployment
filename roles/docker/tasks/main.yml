@@ -44,7 +44,7 @@
     groups: "docker"
     append: True
   loop: "{{ docker.users }}"
-  when: docker_users
+  when: docker.users
 
 - name: Install Docker Compose
   get_url:
