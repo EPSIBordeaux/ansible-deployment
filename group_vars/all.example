@@ -65,7 +65,8 @@ node:
   user: node_user
 
 # Pong Server
-pong_server_domain: URL.COM
+pong:
+  domain: api.pong.epsi-bordeaux.fr
 
 # Expert System
 expert_system:

@@ -7,4 +7,4 @@
     - pong-server
   post_tasks:
     - debug:
-        msg: "Pong API is now configured and available at https://{{ pong_server_domain }}/ and you can play it at https://EPSIBordeaux.github.io/temps-reel/ !"
+        msg: "Pong API is now configured and available at https://{{ pong.domain }}/ !"
