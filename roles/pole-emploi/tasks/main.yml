@@ -2,7 +2,7 @@
 
 - name: Clone Pole Emploi repository
   git:
-    repo: 'https://github.com/BinomeEPSI/epsi-i4-workshop-pe.git'
+    repo: 'https://github.com/EPSIBordeaux/epsi-i4-workshop-pe.git'
     dest: /opt/pole-emploi
 
 - name: Install dependencies

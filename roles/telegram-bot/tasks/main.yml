@@ -2,7 +2,7 @@
 
 - name: Clone Telegram Bot repository
   git:
-    repo: 'https://github.com/BinomeEPSI/Telegram_Bot.git'
+    repo: 'https://github.com/EPSIBordeaux/Telegram_Bot.git'
     dest: "{{ telegram_bot.path }}"
 
 - name: Install dependencies

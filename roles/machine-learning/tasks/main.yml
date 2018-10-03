@@ -2,7 +2,7 @@
 
 - name: Clone Machine Learning repository
   git:
-    repo: 'https://github.com/BinomeEPSI/machine-learning.git'
+    repo: 'https://github.com/EPSIBordeaux/machine-learning.git'
     dest: "/var/www/{{ machine_learning_domain }}"
 
 - name: Set permissions on Machine Learning Repository
