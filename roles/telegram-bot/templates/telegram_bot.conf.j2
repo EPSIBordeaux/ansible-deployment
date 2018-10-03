@@ -1,0 +1,57 @@
+map $http_user_agent $log_ua {
+	~Monit 0;
+	~UptimeRobot/2.0 0;
+
+	default 1; 
+}
+
+upstream telegram_bot {
+	server 127.0.0.1:{{ telegram_bot.port }};
+}
+
+server {
+	include includes/listen-https;
+	server_name {{ telegram_bot.domain }};
+	root /opt/pole-emploi/;
+	index index.html;
+
+	add_header Content-Security-Policy "frame-ancestors 'none'; object-src 'none'";
+	add_header X-Frame-Options DENY;
+	add_header X-Content-Type-Options nosniff;
+	add_header X-XSS-Protection "1; mode=block";
+	add_header Referrer-Policy "no-referrer, strict-origin-when-cross-origin";
+
+	include includes/acme-challenge;
+	include includes/common;
+
+	access_log /var/log/nginx/{{ telegram_bot.domain }}.access.log combined if=$log_ua;
+	error_log /var/log/nginx/{{ telegram_bot.domain }}.error.log;
+
+	location ~ ^/ws {
+	    proxy_set_header X-Real-IP $remote_addr;
+  	    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  	    proxy_set_header X-Forwarded-Proto $scheme;
+  	    proxy_set_header Host $host;
+ 	    proxy_set_header X-NginX-Proxy true;
+		proxy_pass http://telegram_bot;
+	    proxy_redirect off;
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection $http_connection;
+	}
+
+	include includes/ssl-stapling;
+	include includes/ssl-hsts;
+
+	ssl_certificate         /etc/letsencrypt/live/{{ telegram_bot.domain }}/fullchain.pem;
+	ssl_certificate_key     /etc/letsencrypt/live/{{ telegram_bot.domain }}/privkey.pem;
+	ssl_trusted_certificate /etc/letsencrypt/live/{{ telegram_bot.domain }}/chain.pem;
+}
+
+server {
+	include includes/listen-http;
+	include includes/acme-challenge;
+	include includes/common;
+	server_name {{ telegram_bot.domain }};
+	return 301 https://$host$request_uri;
+}
