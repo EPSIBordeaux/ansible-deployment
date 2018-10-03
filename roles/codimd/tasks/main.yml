@@ -4,7 +4,7 @@
   git:
     repo: 'https://github.com/hackmdio/codimd-container.git'
     dest: "{{ codimd.path }}"
-
+    
 - name: Start CodiMD Docker Container
   docker_service:
     state: present

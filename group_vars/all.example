@@ -70,7 +70,8 @@ expert_system:
   port: <int>
 
 # Machine Learning
-machine_learning_domain: DOMAIN.FR
+machine_learning:
+    domain: <url>
 
 # Codi MD
 codimd:

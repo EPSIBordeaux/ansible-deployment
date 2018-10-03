@@ -3,11 +3,11 @@
 - name: Clone Machine Learning repository
   git:
     repo: 'https://github.com/EPSIBordeaux/machine-learning.git'
-    dest: "/var/www/{{ machine_learning_domain }}"
+    dest: "/var/www/{{ machine_learning.domain }}"
 
 - name: Set permissions on Machine Learning Repository
   file:
-    path: "/var/www/{{ machine_learning_domain }}"
+    path: "/var/www/{{ machine_learning.domain }}"
     state: directory
     owner: "www-data" 
     group: "www-data" 
@@ -17,23 +17,23 @@
 - include_role:
     name: certbot_challenge
   vars:
-    certbot_domain: "{{ machine_learning_domain }}"
+    certbot_domain: "{{ machine_learning.domain }}"
 
 - name: Create machine learning vhost sites-available
   template:
     src: ../templates/machine-learning.conf.j2
-    dest: "/etc/nginx/sites-available/{{machine_learning_domain}}.conf"
+    dest: "/etc/nginx/sites-available/{{ machine_learning.domain }}.conf"
     owner: root
     group: root
     mode: 0600
   vars:
-    domain: "{{ machine_learning_domain }}"
+    domain: "{{ machine_learning.domain }}"
   notify: 'restart nginx'
 
 - name: Enable machine learning site
   file: 
-    src: "/etc/nginx/sites-available/{{machine_learning_domain}}.conf"
-    dest: "/etc/nginx/sites-enabled/{{machine_learning_domain}}.conf"
+    src: "/etc/nginx/sites-available/{{machine_learning.domain}}.conf"
+    dest: "/etc/nginx/sites-enabled/{{machine_learning.domain}}.conf"
     state: link
   notify: 'restart nginx'
 
