@@ -1,0 +1,23 @@
+---
+
+- include_role:
+    name: certbot_challenge
+  vars:
+    certbot_domain: "{{ telegram_bot.domain }}"
+
+- name: Create Telegram bot vhost sites-available
+  template:
+    src: ../templates/telegram_bot.conf.j2
+    dest: "/etc/nginx/sites-available/{{ telegram_bot.domain }}.conf"
+    owner: root
+    group: root
+    mode: 0600
+  notify: 'restart nginx'
+
+- name: Enable telegram bot site
+  file: 
+    src: "/etc/nginx/sites-available/{{ telegram_bot.domain }}.conf"
+    dest: "/etc/nginx/sites-enabled/{{ telegram_bot.domain }}.conf"
+    state: link
+  notify: 'restart nginx'
+

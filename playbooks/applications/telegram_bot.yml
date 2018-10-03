@@ -1,0 +1,10 @@
+---
+
+- hosts: binome
+  become: true
+  roles:
+    - nodejs
+    - telegram-bot
+  post_tasks:
+    - debug:
+        msg: "Telegram Bot is now configured and you can talk with him at https://telegram.me/EPSI_UsainBot !"

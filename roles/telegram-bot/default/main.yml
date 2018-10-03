@@ -1,0 +1,12 @@
+telegram_bot:
+  token: <string>
+  path: /opt/telegram_bot
+  port: <int>
+  domain: <url>
+  description: <string>
+  smtp:
+    user: <email>
+    password: <password>
+    host: <url>
+    port: <int>
+    secure: <boolean>
