@@ -1,10 +1,10 @@
 [Unit]
-Description={{ pole_emploi_description }}
+Description={{ pole_emploi.description }}
 
 [Service]
-ExecStart=/usr/bin/node /opt/pole-emploi/app/server.js
+ExecStart=/usr/bin/node {{ pole_emploi.path }}/app/server.js
 # Required on some systems
-#WorkingDirectory=/opt/pole-emploi
+#WorkingDirectory={{ pole_emploi.path }}
 Restart=always
 # Restart service after 10 seconds if node service crashes
 RestartSec=10
@@ -14,7 +14,7 @@ StandardError=syslog
 SyslogIdentifier=pole-emploi
 User={{ node.user }}
 #Group=<alternate group>
-Environment=NODE_ENV=production PORT={{ pole_emploi_port }} PROCESS_NAME=pole-emploi
+Environment=NODE_ENV=production PORT={{ pole_emploi.port }} PROCESS_NAME=pole-emploi
 
 [Install]
 WantedBy=multi-user.target

@@ -52,9 +52,11 @@ monit:
 letsencrypt_email: EMAIL
 
 # Pole Emploi
-pole_emploi_domain: DOMAIN.URL
-pole_emploi_description: DESC
-pole_emploi_port: 3001
+pole_emploi:
+  path: /opt/pole-emploi
+  domain: pole-emploi.epsi-bordeaux.fr
+  port: 3001
+  description: Pole Emploi Detect when user is lost or angry application
 
 # NodeJS
 node:
