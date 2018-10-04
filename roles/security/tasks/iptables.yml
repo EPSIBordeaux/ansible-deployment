@@ -118,20 +118,6 @@
     chain: INPUT
     jump: ACCEPT
 
-- name: Allow incoming SMTP traffic on port 25 TCP
-  iptables:
-    destination_port: 25
-    protocol: tcp
-    chain: INPUT
-    jump: ACCEPT
-
-- name: Allow outgoing SMTP traffic on port 25 TCP
-  iptables:
-    destination_port: 25
-    protocol: tcp
-    chain: OUTPUT
-    jump: ACCEPT
-
 - name: Allow incoming SMTPS traffic on port 587 TCP
   iptables:
     destination_port: 587
@@ -144,48 +130,6 @@
     destination_port: 587
     protocol: tcp
     chain: OUTPUT
-    jump: ACCEPT
-
-- name: Allow outgoing POP3 traffic on port 110 TCP
-  iptables:
-    destination_port: 110
-    protocol: tcp
-    chain: OUTPUT
-    jump: ACCEPT
-
-- name: Allow incoming POP3 traffic on port 110 TCP
-  iptables:
-    destination_port: 110
-    protocol: tcp
-    chain: INPUT
-    jump: ACCEPT
-
-- name: Allow outgoing POP3S traffic on port 995 TCP
-  iptables:
-    destination_port: 995
-    protocol: tcp
-    chain: OUTPUT
-    jump: ACCEPT
-
-- name: Allow incoming POP3S traffic on port 995 TCP
-  iptables:
-    destination_port: 995
-    protocol: tcp
-    chain: INPUT
-    jump: ACCEPT
-
-- name: Allow outgoing IMAP traffic on port 143 TCP
-  iptables:
-    destination_port: 143
-    protocol: tcp
-    chain: OUTPUT
-    jump: ACCEPT
-
-- name: Allow incoming IMAP traffic on port 143 TCP
-  iptables:
-    destination_port: 143
-    protocol: tcp
-    chain: INPUT
     jump: ACCEPT
 
 - name: Allow outgoing Github traffic on port 9418 TCP
