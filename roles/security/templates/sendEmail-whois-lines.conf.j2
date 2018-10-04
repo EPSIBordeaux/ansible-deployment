@@ -12,14 +12,14 @@ actionunban =
 
 [Init]
 # Amended to be the same as the SMTP user
-sender = {{ fail2ban.smtp.user }}
+sender = {{ smtp.user }}
 
 # Added
 
 # SMTP password for user
-password = {{ fail2ban.smtp.password }}
+password = {{ smtp.password }}
 
 # SMTP server - use port 587 for Google rather than 25 (times out too often) or 465 (crashes sendEmail)
-smtp = {{ fail2ban.smtp.host }}:{{ fail2ban.smtp.port }}
+smtp = {{ smtp.host }}:{{ smtp.port }}
 
 servername = {{ fail2ban.servername }}  

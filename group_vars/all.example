@@ -30,11 +30,6 @@ timezone: Europe/Paris
 # Fail2Ban
 fail2ban:
     receiver: contact@<domain>
-    smtp:
-        host: mail.gandi.net
-        port: 587
-        user: no-reply@<domain>
-        password: <password>
     servername: EPSI_Bordeaux_Binome
 
 # Monit
@@ -42,11 +37,6 @@ monit:
   domain: status.<domain>
   recipient: contact@<domain>
   web_password: <password>
-  smtp:
-    host: mail.gandi.net
-    port: 587
-    user: no-reply@<domain>
-    password: <password>
 
 # Let's encrypt
 letsencrypt_email: contact@<domain>
@@ -108,7 +98,8 @@ telegram_bot:
   port: 3004
   domain: telegram-bot.<domain>
   description: Un bot Telegram de recrutement
-  smtp:
+
+smtp:
     user: no-reply@<domain>
     password: <password>
     host: mail.gandi.net
