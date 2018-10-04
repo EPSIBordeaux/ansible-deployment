@@ -46,3 +46,5 @@
     - php7.2-readline 
     - php7.2-xml
   notify: restart php
+
+- include: composer.yml

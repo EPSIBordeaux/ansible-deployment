@@ -54,6 +54,11 @@ node:
   npm_prefix: "/usr/local/lib/npm"
   user: node_user
 
+# Composer
+composer:
+  path: /usr/local/bin/composer
+  update: true
+
 # Pong Server
 pong:
   domain: api.pong.<domain>

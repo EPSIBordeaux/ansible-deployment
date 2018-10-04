@@ -1,0 +1,37 @@
+---
+- name: Check if Composer is installed
+  stat: "path={{ composer.path }}"
+  register: composer_bin
+
+- name: Get Composer installer signature
+  uri:
+    url: https://composer.github.io/installer.sig
+    return_content: true
+  register: composer_installer_signature
+  when: not composer_bin.stat.exists
+
+- name: Download Composer installer
+  get_url:
+    url: https://getcomposer.org/installer
+    dest: /tmp/composer-installer.php
+    mode: 0755
+    checksum: "sha384:{{ composer_installer_signature.content }}"
+  when: not composer_bin.stat.exists
+
+- name: Run Composer installer
+  command: php composer-installer.php 
+  args:
+    chdir: /tmp
+  when: not composer_bin.stat.exists
+
+- name: Move Composer into globally-accessible location
+  command: "mv /tmp/composer.phar {{ composer.path }}"
+  args:
+    creates: "{{ composer.path }}"
+  when: not composer_bin.stat.exists
+
+- name: Update Composer to latest version (if configured)
+  command: "php {{ composer.path }} self-update"
+  register: composer_update
+  changed_when: "'Updating to version' in composer_update.stdout"
+  when: composer.update
