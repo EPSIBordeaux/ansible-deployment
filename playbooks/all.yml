@@ -12,6 +12,4 @@
 
 - import_playbook: applications/pong.yml
 
-- import_playbook: applications/codimd.yml
-
 - import_playbook: applications/telegram_bot.yml
