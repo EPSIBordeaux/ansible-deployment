@@ -1,0 +1,10 @@
+{% for item in monit.domains %}
+check host {{ item.domain }} with address {{ item.domain }}
+    if failed
+        port {{ item.port }}
+        protocol https
+        request "{{ item.request }}"
+    then alert
+
+{% endfor %}
+

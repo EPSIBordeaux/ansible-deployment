@@ -2,12 +2,11 @@
 
 - name: Ensure NodeJS required packages are installed.
   apt: 
-    name: "{{ item }}"
+    name:
+        - build-essential
+        - libssl-dev
+        - apt-transport-https
     state: present
-  with_items:
-    - build-essential
-    - libssl-dev
-    - apt-transport-https
 
 - name: Add Nodesource APT key.
   apt_key:

@@ -2,8 +2,5 @@ monit:
   domain: status.epsi-bordeaux.fr
   recipient: contact@epsi-bordeaux.fr
   web_password: <password>
-  smtp:
-    host: mail.gandi.net
-    port: 587
-    user: no-reply@epsi-bordeaux.fr
-    password: <password>
+  domains:
+    - www.site.com

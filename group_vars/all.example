@@ -32,12 +32,6 @@ fail2ban:
     receiver: contact@<domain>
     servername: EPSI_Bordeaux_Binome
 
-# Monit
-monit:
-  domain: status.<domain>
-  recipient: contact@<domain>
-  web_password: <password>
-
 # Let's encrypt
 letsencrypt_email: contact@<domain>
 
@@ -110,3 +104,25 @@ smtp:
     host: mail.gandi.net
     port: 587
     secure: true
+
+# Monit
+monit:
+  domain: status.domain
+  recipient: contact@domain
+  web_password: <password>
+  domains: 
+    - domain: "{{ pole_emploi.domain }}"
+      port: 443
+      request: /
+    - domain: "{{ pong.domain }}"
+      port: 443
+      request: /
+    - domain: "{{ expert_system.domain }}"
+      port: 443
+      request: /
+    - domain: "{{ machine_learning.domain }}"
+      port: 443
+      request: /
+    - domain: "{{ telegram_bot.domain }}"
+      port: 443
+      request: /
