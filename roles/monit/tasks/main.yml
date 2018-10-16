@@ -12,6 +12,15 @@
     dest: /etc/monit
   notify: restart monit
 
+- name: Copy Hosts configuration
+  template:
+    src: ../templates/hosts.monitrc.j2
+    dest: /etc/monit/conf.d/hosts.monitrc
+    owner: root
+    group: root
+    mode: 0600
+  notify: restart monit
+
 - name: Copy Monit main configuration
   template:
     src: ../templates/monitrc.j2

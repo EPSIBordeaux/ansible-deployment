@@ -1,9 +1,4 @@
 # Fail2Ban
 fail2ban:
     receiver: MAIL
-    smtp:
-        host: SMTP.URL
-        port: 587
-        user: MAIL
-        password: PASSWORD
     servername: ServerName

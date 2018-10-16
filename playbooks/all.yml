@@ -2,8 +2,6 @@
 
 - import_playbook: setup.yml
 
-- import_playbook: applications/monit.yml
-
 - import_playbook: applications/expert-system.yml
 
 - import_playbook: applications/machine-learning.yml
@@ -13,3 +11,5 @@
 - import_playbook: applications/pong.yml
 
 - import_playbook: applications/telegram_bot.yml
+
+- import_playbook: applications/monit.yml
