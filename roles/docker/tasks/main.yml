@@ -18,19 +18,18 @@
 
 - name: Install Python for managing Docker login credentials
   apt:
-    name: "{{ item }}"
+    name:
+        - "python-pip"
+        - "python"
+        - "python-setuptools"
     update_cache: True
     cache_valid_time: "{{ docker.apt.cache_time }}"
-  with_items:
-    - "python-pip"
-    - "python"
 
 - name: Install Pip docker packages
   pip:
-    name: "{{ item }}"
-  with_items:
-    - docker-compose
-    - docker
+    name:
+        - docker-compose
+        - docker
 
 # See https://github.com/ansible/ansible/issues/37200#issuecomment-381158216
 - name: Install Pip Requests for PIP

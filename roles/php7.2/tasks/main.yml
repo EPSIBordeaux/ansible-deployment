@@ -2,12 +2,11 @@
 
 - name: Ensure PHP required packages are installed.
   apt: 
-    name: "{{ item }}"
+    name: 
+      - apt-transport-https 
+      - lsb-release 
+      - ca-certificates
     state: present
-  with_items:
-    - apt-transport-https 
-    - lsb-release 
-    - ca-certificates
 
 - name: Add PHP 7.2 repository apt key
   apt_key:
@@ -30,21 +29,20 @@
 
 - name: Ensure PHP 7.2 and some extensions are installed.
   apt:
-    name: "{{ item }}"
+    name: 
+      - php7.2-fpm
+      - php7.2-cli 
+      - php7.2-common 
+      - php7.2-curl 
+      - php7.2-gd 
+      - php7.2-json 
+      - php7.2-mbstring 
+      - php7.2-mysql 
+      - php7.2-opcache 
+      - php7.2-readline 
+      - php7.2-xml
     state: present
     force_apt_get: True
-  with_items:
-    - php7.2-fpm
-    - php7.2-cli 
-    - php7.2-common 
-    - php7.2-curl 
-    - php7.2-gd 
-    - php7.2-json 
-    - php7.2-mbstring 
-    - php7.2-mysql 
-    - php7.2-opcache 
-    - php7.2-readline 
-    - php7.2-xml
   notify: restart php
 
 - include: composer.yml
