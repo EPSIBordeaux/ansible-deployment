@@ -3,16 +3,18 @@
 - name: Clone Machine Learning repository
   git:
     repo: 'https://github.com/EPSIBordeaux/machine-learning.git'
-    dest: "/var/www/{{ machine_learning.domain }}"
+    dest: "{{machine_learning.path}}"
 
-- name: Set permissions on Machine Learning Repository
-  file:
-    path: "/var/www/{{ machine_learning.domain }}"
-    state: directory
-    owner: "www-data" 
-    group: "www-data" 
-    mode: u=rwX,g=rX,o=rX
-    recurse: yes
+- name: Build required docker images
+  make: 
+    chdir: "{{ machine_learning.path }}"
+    target: install
+
+- name: Start Machine Learning Docker Container
+  docker_service:
+    state: present
+    project_src: "{{ machine_learning.path }}"
+    files: prod.yml
 
 - include_role:
     name: certbot_challenge

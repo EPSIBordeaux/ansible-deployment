@@ -3,7 +3,7 @@
 - hosts: binome
   become: true
   roles:
-    - php7.2
+    - docker
     - machine-learning
   post_tasks:
     - debug:
