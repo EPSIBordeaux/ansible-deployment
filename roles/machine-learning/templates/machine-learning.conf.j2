@@ -22,7 +22,7 @@ server {
 	access_log /var/log/nginx/{{ machine_learning.domain }}.access.log combined if=$log_ua;
 	error_log /var/log/nginx/{{ machine_learning.domain }}.error.log;
 
-	location /training.php {
+	location ~ /training.php {
 		limit_req zone=machine_learning;
 	}
 
