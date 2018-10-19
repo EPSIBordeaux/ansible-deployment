@@ -54,3 +54,9 @@
     group: "root"
     mode: "0755"
   when: docker.compose.install
+
+- name: Ensure docker run at startup
+  systemd:
+    state: started
+    enabled: true
+    name: docker

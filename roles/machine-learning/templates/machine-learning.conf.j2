@@ -5,31 +5,45 @@ map $http_user_agent $log_ua {
 	default 1; 
 }
 
+limit_req_zone $binary_remote_addr zone=machine_learning:10m rate=5r/m;
+
+upstream machine_learning {
+	server 127.0.0.1:3006;
+}
+
 server {
 	include includes/listen-https;
 	server_name {{ machine_learning.domain }};
-	root /var/www/{{ machine_learning.domain }}/tools;
+	root /var/www/acme-challenges;
 	index index.php;
 
 	include includes/acme-challenge;
-	include includes/common;
-    include includes/php;
-
-	add_header Content-Security-Policy "frame-ancestors 'none'; object-src 'none'";
-	add_header X-Frame-Options DENY;
-	add_header X-Content-Type-Options nosniff;
-	add_header X-XSS-Protection "1; mode=block";
-	add_header Referrer-Policy "no-referrer, strict-origin-when-cross-origin";
 
 	access_log /var/log/nginx/{{ machine_learning.domain }}.access.log combined if=$log_ua;
 	error_log /var/log/nginx/{{ machine_learning.domain }}.error.log;
 
-	location ~ /.cache/ {
-		allow all;
+	location ~ /training.php {
+		limit_req zone=machine_learning;
+	}
+
+	location ~ / {
+		proxy_set_header X-Real-IP $remote_addr;
+  	    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  	    proxy_set_header X-Forwarded-Proto $scheme;
+  	    proxy_set_header Host $host;
+ 	    proxy_set_header X-NginX-Proxy true;
+		proxy_pass http://machine_learning;
+	    proxy_redirect off;
+
+		add_header Content-Security-Policy "frame-ancestors 'none'; object-src 'none'";
+		add_header X-Frame-Options DENY;
+		add_header X-Content-Type-Options nosniff;
+		add_header X-XSS-Protection "1; mode=block";
+		add_header Referrer-Policy "no-referrer, strict-origin-when-cross-origin";
+		include includes/ssl-hsts;
 	}
 
 	include includes/ssl-stapling;
-	include includes/ssl-hsts;
 
 	ssl_certificate         /etc/letsencrypt/live/{{ machine_learning.domain }}/fullchain.pem;
 	ssl_certificate_key     /etc/letsencrypt/live/{{ machine_learning.domain }}/privkey.pem;

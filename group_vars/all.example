@@ -67,6 +67,7 @@ expert_system:
 # Machine Learning
 machine_learning:
     domain: machine-learning.<domain>
+    path: /opt/machine-learning
 
 # Codi MD
 codimd:

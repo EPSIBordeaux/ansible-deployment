@@ -1,3 +1,4 @@
 ---
 machine_learning:
   domain: <url>
+  path: /opt/machine-learning
