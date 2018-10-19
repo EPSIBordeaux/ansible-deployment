@@ -40,10 +40,10 @@ server {
 		add_header X-Content-Type-Options nosniff;
 		add_header X-XSS-Protection "1; mode=block";
 		add_header Referrer-Policy "no-referrer, strict-origin-when-cross-origin";
+		include includes/ssl-hsts;
 	}
 
 	include includes/ssl-stapling;
-	include includes/ssl-hsts;
 
 	ssl_certificate         /etc/letsencrypt/live/{{ machine_learning.domain }}/fullchain.pem;
 	ssl_certificate_key     /etc/letsencrypt/live/{{ machine_learning.domain }}/privkey.pem;
