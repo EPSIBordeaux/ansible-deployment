@@ -16,7 +16,7 @@ map $http_user_agent $log_ua {
 server {
 	include includes/listen-https;
 	server_name {{ www.dev.domain }};
-	root /var/www/{{ www.dev.domain }};
+	root {{ www.dev.path }};
 	index index.html;
 
 	error_page 404 /404.html;

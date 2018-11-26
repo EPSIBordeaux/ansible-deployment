@@ -18,7 +18,7 @@
 
 - name: "Ensure sites directories exists"
   file:
-    path: /etc/nginx/ssl
+    path: "{{ item }}"
     state: directory
     owner: "{{ www.deploy_user.name }}"
     group: "{{ www.deploy_user.name }}"
