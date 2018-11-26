@@ -13,3 +13,5 @@
 - import_playbook: applications/telegram_bot.yml
 
 - import_playbook: applications/monit.yml
+
+- import_playbook: applications/www.yml

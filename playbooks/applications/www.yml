@@ -1,0 +1,9 @@
+---
+
+- hosts: binome
+  become: true
+  roles:
+    - www
+  post_tasks:
+    - debug:
+        msg: "Website is now available at https://{{ www.prod.domain }}/ and https://{{ www.dev.domain }} !"

@@ -1,0 +1,88 @@
+map $sent_http_content_type $expires {
+    default                    off;
+    text/html                  epoch;
+    text/css                   max;
+    application/javascript     max;
+    ~image/                    max;
+}
+
+map $http_user_agent $log_ua {
+	~Monit 0;
+	~UptimeRobot/2.0 0;
+
+	default 1; 
+}
+
+server {
+	include includes/listen-https;
+	server_name {{ www.dev.domain }};
+	root /var/www/{{ www.dev.domain }};
+	index index.html;
+
+	error_page 404 /404.html;
+
+	include includes/acme-challenge;
+	include includes/common;
+
+	# add_header Content-Security-Policy "frame-ancestors 'none'; object-src 'none'; script-src 'none'";
+	add_header X-Frame-Options DENY;
+	add_header X-Content-Type-Options nosniff;
+	add_header X-XSS-Protection "1; mode=block";
+	add_header Referrer-Policy "no-referrer, strict-origin-when-cross-origin";
+	
+	access_log /var/log/nginx/{{ www.dev.domain }}.access.log combined if=$log_ua;
+	error_log /var/log/nginx/{{ www.dev.domain }}.error.log;
+
+	expires $expires;
+
+	location ~* \.(jpg|jpeg|png|gif|ico|css|js)$ {
+		expires 365d;
+	}
+
+	location ~ / {
+
+		# http2_push /assets/css/style.css;
+
+		set $cors '';
+		if ($http_origin ~* 'https?://(localhost|{{ www.dev.domain }})') {
+        		set $cors 'true';
+		}
+
+		# always is required to add headers even if response's status is 4xx or 5xx
+		if ($cors = 'true') {
+		        add_header 'Access-Control-Allow-Origin' "$http_origin" always;
+		        add_header 'Access-Control-Allow-Credentials' 'true' always;
+		        add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS' always;
+		        add_header 'Access-Control-Allow-Headers' 'Accept,Authorization,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,User-Agent,X-Mx-ReqToken,X-Requested-With' always;
+		        # required to be able to read Authorization header in frontend
+		        add_header 'Access-Control-Expose-Headers' 'Authorization' always;
+		}
+
+		# 2 if are required, nginx treats each if block as a different context
+		if ($request_method = 'OPTIONS') {
+		        add_header 'Access-Control-Allow-Origin' "$http_origin";
+		        add_header 'Access-Control-Allow-Credentials' 'true';
+		        add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS';
+		        add_header 'Access-Control-Allow-Headers' 'Accept,Authorization,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,User-Agent,X-Mx-ReqToken,X-Requested-With';
+		        return 204;
+		}
+	}
+
+	include includes/ssl-stapling;
+	include includes/ssl-hsts;
+
+	ssl_certificate         /etc/letsencrypt/live/{{ www.dev.domain }}/fullchain.pem;
+	ssl_certificate_key     /etc/letsencrypt/live/{{ www.dev.domain }}/privkey.pem;
+	ssl_trusted_certificate /etc/letsencrypt/live/{{ www.dev.domain }}/chain.pem;
+}
+
+server {
+	include includes/listen-http;
+	include includes/acme-challenge;
+	include includes/common;
+	server_name {{ www.dev.domain }};
+	access_log /var/log/nginx/{{ www.dev.domain }}.access.log;
+	error_log /var/log/nginx/{{ www.dev.domain }}.error.log;
+	return 301 https://$host$request_uri;
+}
+

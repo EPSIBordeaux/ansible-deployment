@@ -127,3 +127,18 @@ monit:
     - domain: "{{ telegram_bot.domain }}"
       port: 443
       request: /
+    - domain: "{{ www.prod.domain }}"
+      port: 443
+      request: /
+
+# www site
+www:
+  deploy_user: 
+    name: USER_DEPLOY
+    ssh_key: "{{ lookup('file', '../keys/USER_DEPLOY.pub') }}"
+  prod:
+    path: /var/www/<domain>
+    domain: <domain>
+  dev: 
+    domain: dev.<domain>
+    path: /var/www/dev.<domain>

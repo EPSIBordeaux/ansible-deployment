@@ -1,0 +1,72 @@
+---
+
+- name: Create deploy user
+  user:
+    append: yes
+    name: "{{ www.deploy_user.name }}"
+    password: "{{ www.deploy_user.name | password_hash('sha512') }}"
+    shell: /bin/bash
+    update_password: on_create
+    groups: ["binome"]
+    # This is to allow connection, because only binome group is allow to connect
+
+- name: Add deploy SSH public keys to allow connection
+  authorized_key:
+    user: "{{ www.deploy_user.name }}"
+    state: present
+    key: '{{ www.deploy_user.ssh_key }}'
+
+- name: "Ensure sites directories exists"
+  file:
+    path: /etc/nginx/ssl
+    state: directory
+    owner: "{{ www.deploy_user.name }}"
+    group: "{{ www.deploy_user.name }}"
+    mode: 0775
+  with_items:
+    - "{{ www.prod.path }}"
+    - "{{ www.dev.path }}"
+
+- include_role:
+    name: certbot_challenge
+  vars:
+    certbot_domain: "{{ www.prod.domain }}"
+
+- name: Create www prod vhost sites-available
+  template:
+    src: ../templates/prod.conf.j2
+    dest: "/etc/nginx/sites-available/{{www.prod.domain}}.conf"
+    owner: root
+    group: root
+    mode: 0600
+  notify: 'restart nginx'
+
+- name: "Enable {{ www.prod.domain }} site"
+  file: 
+    src: "/etc/nginx/sites-available/{{www.prod.domain}}.conf"
+    dest: "/etc/nginx/sites-enabled/{{www.prod.domain}}.conf"
+    state: link
+  notify: 'restart nginx'
+
+- include_role:
+    name: certbot_challenge
+  vars:
+    certbot_domain: "{{ www.dev.domain }}"
+
+- name: Create www dev vhost sites-available
+  template:
+    src: ../templates/dev.conf.j2
+    dest: "/etc/nginx/sites-available/{{www.dev.domain}}.conf"
+    owner: root
+    group: root
+    mode: 0600
+  notify: 'restart nginx'
+
+- name: "Enable {{ www.dev.domain }} site"
+  file: 
+    src: "/etc/nginx/sites-available/{{www.dev.domain}}.conf"
+    dest: "/etc/nginx/sites-enabled/{{www.dev.domain}}.conf"
+    state: link
+  notify: 'restart nginx'
+
+# Their is no extra step to this role, because deploiement is handled by travis.
